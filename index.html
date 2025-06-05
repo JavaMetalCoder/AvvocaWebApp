@@ -1,206 +1,239 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Avvocà - Il tuo avvocato di fiducia online</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
   <meta name="description" content="Consulenze legali rapide, semplici e senza burocrazia.">
+  
+  <!-- Preconnect per performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Skip to content per accessibilità -->
+  <a href="#main-content" class="skip-to-content">Vai al contenuto principale</a>
 
   <header>
-    <nav>
-      <a href="#" class="logo">
-        <div class="logo-img">
-          <img src="assets/logo-avvoca.jpeg" alt="Logo Avvocà">
-        </div>
-        Avvocà
-      </a>
-      <ul>
-        <li><a href="#come-funziona">Come funziona</a></li>
-        <li><a href="#aree">Aree</a></li>
-        <li><a href="#servizi">Servizi</a></li>
-        <li><a href="#bio">Chi sono</a></li>
-        <li><a href="#contatti">Contatti</a></li>
-      </ul>
-    </nav>
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">
+          <div class="logo-img">
+            <img src="assets/logo-avvoca.jpeg" alt="Logo Avvocà" loading="lazy">
+          </div>
+          <span class="logo-text">Avvocà</span>
+        </a>
+        
+        <button class="hamburger" aria-label="Menu di navigazione" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        <ul class="nav-links">
+          <li><a href="#come-funziona">Come funziona</a></li>
+          <li><a href="#aree">Aree</a></li>
+          <li><a href="#servizi">Servizi</a></li>
+          <li><a href="#bio">Chi sono</a></li>
+          <li><a href="#contatti" class="nav-cta">Contatti</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="mobile-overlay"></div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <img src="assets/logo-avvoca.jpeg" alt="Logo Avvocà" class="hero-logo">
-    <div class="hero-content">
-      <h1>L’avvocato online che ti risponde chiaro</h1>
-      <p class="subtitle">Pareri legali rapidi, senza burocrazia.<br>Scrivimi, spiegami, risolviamo.</p>
-      <a href="#contatti" class="cta-primary">Richiedi un parere</a>
-    </div>
-  </section>
+  <main id="main-content">
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="container">
+        <img src="assets/logo-avvoca.jpeg" alt="Logo Avvocà" class="hero-logo" loading="eager">
+        <div class="hero-content">
+          <h1>L'avvocato online che ti risponde chiaro</h1>
+          <p class="subtitle">Pareri legali rapidi, senza burocrazia.<br>Scrivimi, spiegami, risolviamo.</p>
+          <a href="#contatti" class="cta-primary">Richiedi un parere</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- COME FUNZIONA -->
-  <section id="come-funziona" class="come-funziona">
-    <h2>Come funziona</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-icon">✍️</div>
-        <h3>1. Scrivi la tua domanda</h3>
-        <p>Compila il form, spiegami la tua situazione in pochi minuti.</p>
+    <!-- COME FUNZIONA -->
+    <section id="come-funziona" class="come-funziona">
+      <div class="container">
+        <h2>Come funziona</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon" aria-hidden="true">✍️</div>
+            <h3>1. Scrivi la tua domanda</h3>
+            <p>Compila il form, spiegami la tua situazione in pochi minuti.</p>
+          </div>
+          <div class="step">
+            <div class="step-icon" aria-hidden="true">💳</div>
+            <h3>2. Effettua il pagamento</h3>
+            <p>Scegli il servizio, paga in sicurezza (Stripe/PayPal).</p>
+          </div>
+          <div class="step">
+            <div class="step-icon" aria-hidden="true">📨</div>
+            <h3>3. Ricevi risposta chiara</h3>
+            <p>In 24/48h ricevi il parere o la consulenza personalizzata.</p>
+          </div>
+        </div>
       </div>
-      <div class="step">
-        <div class="step-icon">💳</div>
-        <h3>2. Effettua il pagamento</h3>
-        <p>Scegli il servizio, paga in sicurezza (Stripe/PayPal).</p>
-      </div>
-      <div class="step">
-        <div class="step-icon">📨</div>
-        <h3>3. Ricevi risposta chiara</h3>
-        <p>In 24/48h ricevi il parere o la consulenza personalizzata.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- AREE DI COMPETENZA -->
-  <section id="aree" class="aree-comp">
-    <h2>Aree di competenza</h2>
-    <div class="aree-grid">
-      <div class="area-box">
-        <div class="area-icon">🏛️</div>
-        <h3>Diritto Civile</h3>
-        <p>Riscossione crediti, processi civili, compravendite, locazioni, condominio, prescrizioni, inadempimenti, sfratti.</p>
+    <!-- AREE DI COMPETENZA -->
+    <section id="aree" class="aree-comp">
+      <div class="container">
+        <h2>Aree di competenza</h2>
+        <div class="aree-grid">
+          <article class="area-box">
+            <div class="area-icon" aria-hidden="true">🏛️</div>
+            <h3>Diritto Civile</h3>
+            <p>Riscossione crediti, processi civili, compravendite, locazioni, condominio, prescrizioni, inadempimenti, sfratti.</p>
+          </article>
+          <article class="area-box">
+            <div class="area-icon" aria-hidden="true">🏢</div>
+            <h3>Diritto Amministrativo</h3>
+            <p>Ricorsi al TAR, rapporti PA, legittimità procedimenti, tutela interessi legittimi, contratti pubblici.</p>
+          </article>
+          <article class="area-box">
+            <div class="area-icon" aria-hidden="true">💰</div>
+            <h3>Diritto Tributario</h3>
+            <p>Fisco, ricorsi tributari, contabilità, società, titoli di credito, controlli e sanzioni.</p>
+          </article>
+          <article class="area-box">
+            <div class="area-icon" aria-hidden="true">👨‍👩‍👧‍👦</div>
+            <h3>Diritto Familiare</h3>
+            <p>Separazione, divorzio, figli, donazioni, testamenti, regimi patrimoniali, eredità.</p>
+          </article>
+          <article class="area-box">
+            <div class="area-icon" aria-hidden="true">💼</div>
+            <h3>Diritto del Lavoro</h3>
+            <p>Licenziamenti, dimissioni, contratti lavoro, INPS, INPDAP, mobbing, pensioni, tutele lavoratore.</p>
+          </article>
+        </div>
       </div>
-      <div class="area-box">
-        <div class="area-icon">🏢</div>
-        <h3>Diritto Amministrativo</h3>
-        <p>Ricorsi al TAR, rapporti PA, legittimità procedimenti, tutela interessi legittimi, contratti pubblici.</p>
-      </div>
-      <div class="area-box">
-        <div class="area-icon">💰</div>
-        <h3>Diritto Tributario</h3>
-        <p>Fisco, ricorsi tributari, contabilità, società, titoli di credito, controlli e sanzioni.</p>
-      </div>
-      <div class="area-box">
-        <div class="area-icon">👨‍👩‍👧‍👦</div>
-        <h3>Diritto Familiare</h3>
-        <p>Separazione, divorzio, figli, donazioni, testamenti, regimi patrimoniali, eredità.</p>
-      </div>
-      <div class="area-box">
-        <div class="area-icon">💼</div>
-        <h3>Diritto del Lavoro</h3>
-        <p>Licenziamenti, dimissioni, contratti lavoro, INPS, INPDAP, mobbing, pensioni, tutele lavoratore.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SERVIZI -->
-  <section id="servizi">
-    <h2>Servizi e prezzi</h2>
-    <div class="servizi-grid">
-      <div class="servizio-card">
-        <h3>📝 Parere scritto</h3>
-        <div class="prezzo">€30</div>
-        <p>Risposta scritta in 24/48h.<br>Per domande legali semplici e dubbi veloci.</p>
+    <!-- SERVIZI -->
+    <section id="servizi" class="servizi">
+      <div class="container">
+        <h2>Servizi e prezzi</h2>
+        <div class="servizi-grid">
+          <article class="servizio-card">
+            <h3>📝 Parere scritto</h3>
+            <div class="prezzo">€30</div>
+            <p>Risposta scritta in 24/48h.<br>Per domande legali semplici e dubbi veloci.</p>
+          </article>
+          <article class="servizio-card">
+            <h3>🔍 Revisione contratti</h3>
+            <div class="prezzo">€30</div>
+            <p>Controllo e suggerimenti su qualsiasi contratto o documento legale.</p>
+          </article>
+          <article class="servizio-card">
+            <h3>✒️ Redazione contratti</h3>
+            <div class="prezzo">€60</div>
+            <p>Stesura completa di contratti: affitto, lavoro, comodato, vendita, ecc.</p>
+          </article>
+        </div>
       </div>
-      <div class="servizio-card">
-        <h3>🔍 Revisione contratti</h3>
-        <div class="prezzo">€30</div>
-        <p>Controllo e suggerimenti su qualsiasi contratto o documento legale.</p>
-      </div>
-      <div class="servizio-card">
-        <h3>✒️ Redazione contratti</h3>
-        <div class="prezzo">€60</div>
-        <p>Stesura completa di contratti: affitto, lavoro, comodato, vendita, ecc.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CHI SONO -->
-  <section id="bio" class="bio-section">
-    <h2>Chi è Avvocà</h2>
-    <div class="bio-content">
-      <div class="bio-avatar">
-        <img src="assets/logo-avvoca.jpeg" alt="Avatar Avvocà">
+    <!-- CHI SONO -->
+    <section id="bio" class="bio-section">
+      <div class="container">
+        <h2>Chi è Avvocà</h2>
+        <div class="bio-content">
+          <div class="bio-avatar">
+            <img src="assets/logo-avvoca.jpeg" alt="Avatar Avvocà" loading="lazy">
+          </div>
+          <div class="bio-text">
+            <blockquote>
+              "Rendo la legge comprensibile. Perché ogni diritto, prima di tutto, deve essere umano."
+            </blockquote>
+            <div class="bio-info">
+              <p><strong>Avvocato civilista, ti spiego la legge in modo semplice.</strong></p>
+              <p>Ciao! Sono <strong>Pasquale Granata</strong>, il tuo Avvocà di fiducia. 👋</p>
+              <ul>
+                <li>Soluzioni legali chiare e veloci, senza burocrazia.</li>
+                <li>Oltre 5 anni di esperienza in diritto civile e familiare.</li>
+                <li>Consulenze digitali, umane e concrete: niente studi polverosi, risposte senza attese infinite.</li>
+                <li>Assistenza su dubbi legali, revisioni e redazioni contratti, pratiche familiari e molto altro.</li>
+              </ul>
+              <p class="bio-contact">
+                <strong>Email:</strong>
+                <a href="mailto:avvocatopasqualegranata@gmail.com">
+                  avvocatopasqualegranata@gmail.com
+                </a>
+              </p>
+              <a href="#chi-sono" class="bio-link">Leggi di più</a>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="bio-text">
-        <blockquote style="margin-bottom:1.1rem;color:#475569;font-style:italic;border-left:3px solid #fbbf24;padding-left:1rem;">
-          "Rendo la legge comprensibile. Perché ogni diritto, prima di tutto, deve essere umano."
-        </blockquote>
-        <div>
-          <strong>Avvocato civilista, ti spiego la legge in modo semplice.</strong>
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section class="testimonial">
+      <div class="container">
+        <h2>Dicono di me</h2>
+        <div class="testimonial-content">
+          <p>In arrivo…</p>
         </div>
-        <div>
-          <span>Ciao! Sono <b>Pasquale Granata</b>, il tuo Avvocà di fiducia. 👋</span>
-        </div>
-        <ul>
-          <li>Soluzioni legali chiare e veloci, senza burocrazia.</li>
-          <li>Oltre 5 anni di esperienza in diritto civile e familiare.</li>
-          <li>Consulenze digitali, umane e concrete: niente studi polverosi, risposte senza attese infinite.</li>
-          <li>Assistenza su dubbi legali, revisioni e redazioni contratti, pratiche familiari e molto altro.</li>
-        </ul>
-        <div>
-          <strong>Email:</strong>
-          <a href="mailto:avvocatopasqualegranata@gmail.com">
-            avvocatopasqualegranata@gmail.com
-          </a>
-        </div>
-        <a href="#chi-sono" class="bio-link">Leggi di più</a>
       </div>
-      
-    </div>
-  </section>
+    </section>
 
-  <!-- TESTIMONIAL -->
-  <section class="testimonial">
-    <h2>Dicono di me</h2>
-    <div class="testimonial-content">
-      <p>In arrivo…</p>
-    </div>
-  </section>
-
-  <!-- CONTATTI -->
-  <section id="contatti" class="contatti">
-    <h2>Richiedi un parere</h2>
-    <div class="form-container">
-      <form class="contact-form" id="consultationForm">
-        <div class="form-group">
-          <label for="nome">Il tuo nome *</label>
-          <input type="text" id="nome" name="nome" required placeholder="Come ti chiami?">
+    <!-- CONTATTI -->
+    <section id="contatti" class="contatti">
+      <div class="container">
+        <h2>Richiedi un parere</h2>
+        <div class="form-container">
+          <form class="contact-form" id="consultationForm">
+            <div class="form-group">
+              <label for="nome">Il tuo nome *</label>
+              <input type="text" id="nome" name="nome" required placeholder="Come ti chiami?" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required placeholder="La tua email" autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label for="descrizione">Descrivi il tuo problema *</label>
+              <textarea id="descrizione" name="descrizione" required placeholder="Più dettagli dai, meglio posso aiutarti!" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="servizio">Servizio *</label>
+              <select id="servizio" name="servizio" required>
+                <option value="">Scegli il servizio...</option>
+                <option value="parere">Parere scritto - €30</option>
+                <option value="revisione">Revisione contratti - €30</option>
+                <option value="redazione">Redazione contratti - €60</option>
+              </select>
+            </div>
+            <button type="submit" class="submit-btn">Invia richiesta</button>
+          </form>
+          <div class="form-message" style="display:none;" role="alert"></div>
         </div>
-        <div class="form-group">
-          <label for="email">Email *</label>
-          <input type="email" id="email" name="email" required placeholder="La tua email">
-        </div>
-        <div class="form-group">
-          <label for="descrizione">Descrivi il tuo problema *</label>
-          <textarea id="descrizione" name="descrizione" required placeholder="Più dettagli dai, meglio posso aiutarti!"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="servizio">Servizio</label>
-          <select id="servizio" name="servizio" required>
-            <option value="">Scegli il servizio...</option>
-            <option value="parere">Parere scritto - €30</option>
-            <option value="revisione">Revisione contratti - €30</option>
-            <option value="redazione">Redazione contratti - €60</option>
-          </select>
-        </div>
-        <button type="submit" class="submit-btn">Invia richiesta</button>
-      </form>
-      <div class="form-message" style="display:none;"></div>
-    </div>
-  </section>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <div class="footer-content">
-      <div class="footer-links">
-        <a href="#privacy">Privacy Policy</a>
-        <a href="#termini">Termini di Servizio</a>
-        <a href="#disclaimer">Disclaimer AI</a>
-        <a href="#cookies">Cookie Policy</a>
-      </div>
-      <div class="copyright">
-        <p>© 2025 Avvocà - Avv. Pasquale Granata • avvocatopasqualegranata@gmail.com<br>
-        <small>Iscritto all'Ordine Avvocati di Napoli Nord - P.IVA: IT04770330613 - C.F.: GRNPQL93T27I234K</small>
-        </p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#termini">Termini di Servizio</a>
+          <a href="#disclaimer">Disclaimer AI</a>
+          <a href="#cookies">Cookie Policy</a>
+        </div>
+        <div class="copyright">
+          <p>© 2025 Avvocà - Avv. Pasquale Granata • 
+            <a href="mailto:avvocatopasqualegranata@gmail.com">avvocatopasqualegranata@gmail.com</a><br>
+            <small>Iscritto all'Ordine Avvocati di Napoli Nord - P.IVA: IT04770330613 - C.F.: GRNPQL93T27I234K</small>
+          </p>
+        </div>
       </div>
     </div>
   </footer>
