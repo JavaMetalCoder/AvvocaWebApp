@@ -690,61 +690,9 @@ function initTouchOptimizations() {
   }
 }
 
-// ===== PERFORMANCE OPTIMIZATIONS =====
-function initPerformanceOptimizations() {
-  // Preload critical resources
-  const criticalResources = [
-    { href: 'assets/logo-avvoca.jpeg', as: 'image' },
-    { href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap', as: 'style' }
-  ];
-  
-  criticalResources.forEach(resource => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.href = resource.href;
-    link.as = resource.as;
-    if (resource.as === 'font') link.crossOrigin = 'anonymous';
-    document.head.appendChild(link);
-  });
-  
-  // Defer non-critical CSS
-  const stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
-  stylesheets.forEach(stylesheet => {
-    if (!stylesheet.href.includes('critical')) {
-      stylesheet.media = 'print';
-      stylesheet.onload = function() { this.media = 'all'; };
-    }
-  });
-  
-  // Optimize animations for performance
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (prefersReducedMotion.matches) {
-    document.documentElement.classList.add('reduced-motion');
-  }
-  
-  // Lazy load non-critical JavaScript
-  window.addEventListener('load', () => {
-    // Load analytics, chat widgets, etc.
-    setTimeout(() => {
-      // Example: Load Google Analytics
-      if (typeof gtag === 'undefined') {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
-        document.head.appendChild(script);
-      }
-    }, 3000);
-  });
-}
 
-// ===== SERVICE WORKER (PWA Support) =====
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(err => {
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
-}
+
+
 
 // ===== UTILITY: Copy to clipboard =====
 function copyToClipboard(text) {
