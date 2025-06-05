@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Avvocà - Il tuo avvocato di fiducia online</title>
-  <meta name="description" content="Consulenze legali moderne e accessibili con Avvocà. Pareri chiari, veloci e personalizzati in diritto civile, famiglia, lavoro e contratti.">
+  <meta name="description" content="Consulenze legali rapide, semplici e senza burocrazia.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,103 +13,133 @@
     <nav>
       <a href="#" class="logo">
         <div class="logo-img">
-          <img src="assets/logo-avvoca.jpeg" alt="Avvocà Logo">
+          <img src="assets/logo-avvoca.jpeg" alt="Logo Avvocà">
         </div>
         Avvocà
       </a>
       <ul>
-        <li><a href="#chi-sono">Chi sono</a></li>
+        <li><a href="#come-funziona">Come funziona</a></li>
+        <li><a href="#aree">Aree</a></li>
         <li><a href="#servizi">Servizi</a></li>
-        <li><a href="#contatti">Richiedi parere</a></li>
+        <li><a href="#bio">Chi sono</a></li>
+        <li><a href="#contatti">Contatti</a></li>
       </ul>
     </nav>
   </header>
 
+  <!-- HERO SECTION -->
   <section class="hero">
+    <img src="assets/logo-avvoca.jpeg" alt="Logo Avvocà" class="hero-logo">
     <div class="hero-content">
-      <h1>Il tuo avvocato di fiducia,<br>sempre a portata di click</h1>
-      <p class="subtitle">Consulenze legali moderne, veloci e personalizzate.<br>Perché il diritto non deve essere complicato!</p>
-      <a href="#contatti" class="cta-primary">Richiedi una consulenza</a>
+      <h1>L’avvocato online che ti risponde chiaro</h1>
+      <p class="subtitle">Pareri legali rapidi, senza burocrazia.<br>Scrivimi, spiegami, risolviamo.</p>
+      <a href="#contatti" class="cta-primary">Richiedi un parere</a>
     </div>
   </section>
 
-  <section id="chi-sono" class="chi-sono">
-    <h2>Chi sono</h2>
-    <div class="chi-sono-content">
-      <div class="avatar-section">
-        <!-- Sostituisci con una vera foto se te la manda -->
-        <div class="avatar">👨‍💼</div>
-        <div class="credentials">
-          <h4>Dati legali e professionali</h4>
-          <p>
-            <strong>Avvocato Pasquale Granata</strong><br>
-            Iscritto all'Ordine degli Avvocati di Napoli Nord<br>
-            Corso Italia 123<br>
-            81030 - San Marcellino (CE) - IT<br>
-            P.IVA: IT04770330613<br>
-            C.F.: GRNPQL93T27I234K
-          </p>
-        </div>
+  <!-- COME FUNZIONA -->
+  <section id="come-funziona" class="come-funziona">
+    <h2>Come funziona</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">✍️</div>
+        <h3>1. Scrivi la tua domanda</h3>
+        <p>Compila il form, spiegami la tua situazione in pochi minuti.</p>
       </div>
-      <div class="bio-text">
-        <p>Ciao! Sono Pasquale Granata, il tuo Avvocà di fiducia. 👋</p>
-        <p>Ho scelto di portare il diritto nell'era digitale perché credo che <strong>le soluzioni legali debbano essere chiare, veloci e alla portata di tutti</strong>.</p>
-        <p>Niente uffici polverosi o attese infinite. Solo <strong>consulenze moderne</strong>, con un pizzico di tecnologia e tanto buon senso umano.</p>
-        <p>Se hai un dubbio legale, un contratto da controllare o una situazione da chiarire, <strong>sono qui per aiutarti</strong> - in modo semplice e diretto!</p>
-        <p><strong>Email:</strong> <a href="mailto:avvocatopasqualegranata@gmail.com">avvocatopasqualegranata@gmail.com</a></p>
+      <div class="step">
+        <div class="step-icon">💳</div>
+        <h3>2. Effettua il pagamento</h3>
+        <p>Scegli il servizio, paga in sicurezza (Stripe/PayPal).</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">📨</div>
+        <h3>3. Ricevi risposta chiara</h3>
+        <p>In 24/48h ricevi il parere o la consulenza personalizzata.</p>
       </div>
     </div>
   </section>
 
+  <!-- AREE DI COMPETENZA -->
+  <section id="aree" class="aree-comp">
+    <h2>Aree di competenza</h2>
+    <div class="aree-grid">
+      <div class="area-box">
+        <div class="area-icon">🏛️</div>
+        <h3>Diritto Civile</h3>
+        <p>Riscossione crediti, processi civili, compravendite, locazioni, condominio, prescrizioni, inadempimenti, sfratti.</p>
+      </div>
+      <div class="area-box">
+        <div class="area-icon">🏢</div>
+        <h3>Diritto Amministrativo</h3>
+        <p>Ricorsi al TAR, rapporti PA, legittimità procedimenti, tutela interessi legittimi, contratti pubblici.</p>
+      </div>
+      <div class="area-box">
+        <div class="area-icon">💰</div>
+        <h3>Diritto Tributario</h3>
+        <p>Fisco, ricorsi tributari, contabilità, società, titoli di credito, controlli e sanzioni.</p>
+      </div>
+      <div class="area-box">
+        <div class="area-icon">👨‍👩‍👧‍👦</div>
+        <h3>Diritto Familiare</h3>
+        <p>Separazione, divorzio, figli, donazioni, testamenti, regimi patrimoniali, eredità.</p>
+      </div>
+      <div class="area-box">
+        <div class="area-icon">💼</div>
+        <h3>Diritto del Lavoro</h3>
+        <p>Licenziamenti, dimissioni, contratti lavoro, INPS, INPDAP, mobbing, pensioni, tutele lavoratore.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVIZI -->
   <section id="servizi">
-    <h2>Come posso aiutarti?</h2>
+    <h2>Servizi e prezzi</h2>
     <div class="servizi-grid">
       <div class="servizio-card">
-        <h3>⚡ Parere Rapido</h3>
-        <p>Hai una domanda veloce? Ti rispondo entro 24 ore con un parere chiaro e diretto.</p>
-        <div class="prezzo">€49</div>
-        <small>Perfetto per: dubbi veloci, contratti semplici, prime valutazioni</small>
+        <h3>📝 Parere scritto</h3>
+        <div class="prezzo">€30</div>
+        <p>Risposta scritta in 24/48h.<br>Per domande legali semplici e dubbi veloci.</p>
       </div>
       <div class="servizio-card">
-        <h3>📋 Consulenza Completa</h3>
-        <p>Analisi approfondita del tuo caso con parere dettagliato e strategia d'azione.</p>
-        <div class="prezzo">€149</div>
-        <small>Include: analisi documenti, parere scritto, 30min di chiamata</small>
+        <h3>🔍 Revisione contratti</h3>
+        <div class="prezzo">€30</div>
+        <p>Controllo e suggerimenti su qualsiasi contratto o documento legale.</p>
       </div>
       <div class="servizio-card">
-        <h3>👨‍👩‍👧‍👦 Diritto di Famiglia</h3>
-        <p>Separazioni, divorzi, affidamenti. Ti guido in ogni fase con empatia e professionalità.</p>
-        <div class="prezzo">€199</div>
-        <small>Supporto completo: documenti, procedure, accordi</small>
-      </div>
-      <div class="servizio-card">
-        <h3>💼 Diritto del Lavoro</h3>
-        <p>Licenziamenti, TFR, mobbing, contratti. Proteggiamo i tuoi diritti sul lavoro.</p>
-        <div class="prezzo">€129</div>
-        <small>Analisi situazione + strategia di tutela</small>
-      </div>
-      <div class="servizio-card">
-        <h3>📄 Contratti & Società</h3>
-        <p>Revisione, redazione e negoziazione di contratti e atti societari.</p>
-        <div class="prezzo">€99</div>
-        <small>Check completo + suggerimenti miglioramento</small>
-      </div>
-      <div class="servizio-card">
-        <h3>🤖 AI-Assisted</h3>
-        <p>Analisi preliminare con AI + supervisione umana. Veloce ed economico!</p>
-        <div class="prezzo">€29</div>
-        <small>Per valutazioni iniziali e check rapidi</small>
+        <h3>✒️ Redazione contratti</h3>
+        <div class="prezzo">€60</div>
+        <p>Stesura completa di contratti: affitto, lavoro, comodato, vendita, ecc.</p>
       </div>
     </div>
   </section>
 
-  <section id="contatti" class="contatti">
-    <h2>Oh Avvocà, ho un dubbio... mi aiuti?</h2>
-    <div class="form-container">
-      <div class="form-intro">
-        <p>Raccontami la tua situazione e scegli il tipo di consulenza che preferisci.<br>
-        Ti ricontatterò velocemente con tutte le informazioni! 🚀</p>
+  <!-- CHI SONO -->
+  <section id="bio" class="bio-section">
+    <h2>Chi è Avvocà</h2>
+    <div class="bio-content">
+      <div class="bio-avatar">
+        <img src="assets/logo-avvoca.jpeg" alt="Avatar Avvocà">
       </div>
+      <div class="bio-text">
+        <p><strong>Avvocato civilista, ti spiego la legge in modo semplice.</strong></p>
+        <p>Tono umano e autorevole, senza formalismi inutili. Scrivimi, parliamo chiaro e risolviamo insieme.</p>
+        <a href="#chi-sono" class="bio-link">Leggi di più</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="testimonial">
+    <h2>Dicono di me</h2>
+    <div class="testimonial-content">
+      <p>In arrivo…</p>
+    </div>
+  </section>
+
+  <!-- CONTATTI -->
+  <section id="contatti" class="contatti">
+    <h2>Richiedi un parere</h2>
+    <div class="form-container">
       <form class="contact-form" id="consultationForm">
         <div class="form-group">
           <label for="nome">Il tuo nome *</label>
@@ -120,46 +150,21 @@
           <input type="email" id="email" name="email" required placeholder="La tua email">
         </div>
         <div class="form-group">
-          <label for="telefono">Telefono (opzionale)</label>
-          <input type="tel" id="telefono" name="telefono" placeholder="Per contattarti più velocemente">
+          <label for="descrizione">Descrivi il tuo problema *</label>
+          <textarea id="descrizione" name="descrizione" required placeholder="Più dettagli dai, meglio posso aiutarti!"></textarea>
         </div>
         <div class="form-group">
-          <label for="area_legale">Area legale *</label>
-          <select id="area_legale" name="area_legale" required>
-            <option value="">Seleziona l'area...</option>
-            <option value="civile">Diritto Civile</option>
-            <option value="famiglia">Diritto di Famiglia</option>
-            <option value="lavoro">Diritto del Lavoro</option>
-            <option value="contratti">Contratti & Società</option>
-            <option value="altro">Altro / Non so</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="tipo_consulenza">Tipo di consulenza *</label>
-          <select id="tipo_consulenza" name="tipo_consulenza" required>
+          <label for="servizio">Servizio</label>
+          <select id="servizio" name="servizio" required>
             <option value="">Scegli il servizio...</option>
-            <option value="rapido">Parere Rapido - €49</option>
-            <option value="completa">Consulenza Completa - €149</option>
-            <option value="famiglia">Diritto Famiglia - €199</option>
-            <option value="lavoro">Diritto Lavoro - €129</option>
-            <option value="contratti">Contratti & Società - €99</option>
-            <option value="ai">AI-Assisted - €29</option>
+            <option value="parere">Parere scritto - €30</option>
+            <option value="revisione">Revisione contratti - €30</option>
+            <option value="redazione">Redazione contratti - €60</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="urgenza">Urgenza</label>
-          <select id="urgenza" name="urgenza">
-            <option value="normale">Normale (2-3 giorni)</option>
-            <option value="veloce">Veloce (24-48 ore)</option>
-            <option value="urgente">Urgente (entro 24h) +€30</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="descrizione">Descrivi la tua situazione *</label>
-          <textarea id="descrizione" name="descrizione" required placeholder="Spiegami cosa è successo e di cosa hai bisogno. Più dettagli dai, meglio posso aiutarti! 😊"></textarea>
-        </div>
-        <button type="submit" class="submit-btn">Invia richiesta di consulenza</button>
+        <button type="submit" class="submit-btn">Invia richiesta</button>
       </form>
+      <div class="form-message" style="display:none;"></div>
     </div>
   </section>
 
@@ -172,9 +177,9 @@
         <a href="#cookies">Cookie Policy</a>
       </div>
       <div class="copyright">
-        <p>© 2025 Avvocà - Consulenze legali moderne • avvoca.net<br>
-        <small>Niente formalismi inutili, solo soluzioni concrete! ⚖️</small></p>
-        <p><strong>Avvocato Pasquale Granata • P.IVA IT04770330613 • C.F. GRNPQL93T27I234K • Iscritto all'Ordine di Napoli Nord</strong></p>
+        <p>© 2025 Avvocà - Avv. Pasquale Granata • avvocatopasqualegranata@gmail.com<br>
+        <small>Iscritto all'Ordine Avvocati di Napoli Nord - P.IVA: IT04770330613 - C.F.: GRNPQL93T27I234K</small>
+        </p>
       </div>
     </div>
   </footer>
