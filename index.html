@@ -189,30 +189,62 @@
       <div class="container">
         <h2>Richiedi un parere</h2>
         <div class="form-container">
-          <form class="contact-form" id="consultationForm">
+          <form class="contact-form" id="consultationForm" enctype="multipart/form-data" autocomplete="off">
+            <!-- Nome -->
             <div class="form-group">
-              <label for="nome">Il tuo nome *</label>
-              <input type="text" id="nome" name="nome" required placeholder="Come ti chiami?" autocomplete="name">
+              <label for="nome">Nome e Cognome *</label>
+              <input type="text" id="nome" name="nome" required placeholder="Il tuo nome e cognome">
             </div>
+          
+            <!-- Email -->
             <div class="form-group">
               <label for="email">Email *</label>
-              <input type="email" id="email" name="email" required placeholder="La tua email" autocomplete="email">
+              <input type="email" id="email" name="email" required placeholder="La tua email">
             </div>
+          
+            <!-- Macroarea -->
             <div class="form-group">
-              <label for="descrizione">Descrivi il tuo problema *</label>
-              <textarea id="descrizione" name="descrizione" required placeholder="Più dettagli dai, meglio posso aiutarti!" rows="4"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="servizio">Servizio *</label>
-              <select id="servizio" name="servizio" required>
-                <option value="">Scegli il servizio...</option>
-                <option value="parere">Parere scritto - €30</option>
-                <option value="revisione">Revisione contratti - €30</option>
-                <option value="redazione">Redazione contratti - €60</option>
+              <label for="macroarea">Area di competenza *</label>
+              <select id="macroarea" name="macroarea" required>
+                <option value="">Scegli l'area...</option>
+                <option value="civile">Diritto Civile</option>
+                <option value="lavoro">Diritto del Lavoro</option>
+                <option value="tributario">Diritto Tributario</option>
+                <option value="famiglia">Diritto di Famiglia</option>
+                <option value="altro">Altro</option>
               </select>
             </div>
-            <button type="submit" class="submit-btn">Invia richiesta</button>
+
+            <div class="form-group">
+              <label for="servizio">Servizio richiesto *</label>
+              <select id="servizio" name="servizio" required>
+                <option value="">Scegli il servizio...</option>
+                <option value="parere">Parere scritto (24/48h) – 30€</option>
+                <option value="revisione">Revisione contratto – 30€</option>
+                <option value="redazione">Redazione contratto – 60€</option>
+              </select>
+            </div>
+          
+            <!-- Testo della questione -->
+            <div class="form-group">
+              <label for="descrizione">Descrivi la questione *</label>
+              <textarea id="descrizione" name="descrizione" required maxlength="1000"
+                placeholder="Spiega il problema o la richiesta, massimo 1000 caratteri"></textarea>
+              <div class="char-count" id="descrizione-counter">0/1000</div>
+            </div>
+
+            
+          
+            <!-- Upload documenti -->
+            <div class="form-group">
+              <label for="allegati">Carica documenti (PDF, DOC, JPG, PNG, max 5 file, max 10MB)</label>
+              <input type="file" id="allegati" name="allegati" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>
+            </div>
+          
+            <button type="submit" class="submit-btn">Avanti</button>
+            <div class="form-message" style="display:none;"></div>
           </form>
+          
           <div class="form-message" style="display:none;" role="alert"></div>
         </div>
       </div>
@@ -223,10 +255,10 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-links">
-          <a href="#privacy">Privacy Policy</a>
-          <a href="#termini">Termini di Servizio</a>
-          <a href="#disclaimer">Disclaimer AI</a>
-          <a href="#cookies">Cookie Policy</a>
+          <a href="/pages/privacy.html">Privacy Policy</a>
+          <a href="/pages/termini.html">Termini di Servizio</a>
+          <a href="/pages/disclaimer.html">Disclaimer AI</a>
+          <a href="/pages/cookies.html">Cookie Policy</a>
         </div>
         <div class="copyright">
           <p>© 2025 Avvocà - Avv. Pasquale Granata • 
