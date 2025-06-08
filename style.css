@@ -1562,3 +1562,18 @@ footer {
     border: 2px solid var(--text-dark);
   }
 }
+
+/* Animazioni di ingresso fade/slide (puoi customizzare i tempi/direzione) */
+.before-animate { opacity: 0; transform: translateY(50px); transition: opacity 0.8s cubic-bezier(.5,1,.89,1), transform 0.8s cubic-bezier(.5,1,.89,1);}
+.animate { opacity: 1; transform: none; }
+
+header.sticky { box-shadow: 0 4px 18px -8px #0002; background: #fff; transition: all .22s; }
+header.sticky.shrink { padding: 0.2em 0 !important; }
+
+.scroll-progress {
+  position: fixed;
+  left: 0; top: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg,#27b8ff,#51d784);
+  z-index: 10000;
+  transition: width .22s;
+}

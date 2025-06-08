@@ -54,6 +54,103 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// ===== MENU MOBILE (Hamburger) =====
+function initMobileMenu() {
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+  const overlay = document.querySelector('.mobile-overlay');
+
+  if (!hamburger || !navLinks) return;
+
+  hamburger.addEventListener('click', function () {
+    const expanded = this.getAttribute('aria-expanded') === 'true' || false;
+    this.setAttribute('aria-expanded', !expanded);
+    navLinks.classList.toggle('active');
+    overlay.classList.toggle('active');
+    document.body.classList.toggle('no-scroll');
+  });
+
+  overlay.addEventListener('click', () => {
+    hamburger.setAttribute('aria-expanded', 'false');
+    navLinks.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.classList.remove('no-scroll');
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.setAttribute('aria-expanded', 'false');
+      navLinks.classList.remove('active');
+      overlay.classList.remove('active');
+      document.body.classList.remove('no-scroll');
+    });
+  });
+}
+
+// ===== SMOOTH SCROLL =====
+function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(link => {
+    link.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        e.preventDefault();
+        const yOffset = window.innerWidth <= config.mobileBreakpoint ? -60 : -90;
+        const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
+}
+
+// ===== STICKY HEADER =====
+function initStickyHeader() {
+  const header = document.querySelector('header');
+  if (!header) return;
+  let lastScrollY = window.scrollY;
+
+  window.addEventListener('scroll', throttle(() => {
+    if (window.scrollY > config.scrollThreshold) {
+      header.classList.add('sticky');
+      // shrink effect
+      if (window.scrollY > lastScrollY) {
+        header.classList.add('shrink');
+      } else {
+        header.classList.remove('shrink');
+      }
+    } else {
+      header.classList.remove('sticky', 'shrink');
+    }
+    lastScrollY = window.scrollY;
+  }, 50));
+}
+
+// ===== ANIMAZIONI SU SCROLL =====
+function initScrollAnimations() {
+  const animatedEls = document.querySelectorAll(
+    '.step, .area-box, .servizio-card, .bio-section, .testimonial, .form-container, section'
+  );
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.15
+    }
+  );
+
+  animatedEls.forEach(el => {
+    el.classList.add('before-animate');
+    observer.observe(el);
+  });
+}
+
 // ===== FORM HANDLER COMPLETO (STRIPE) =====
 function initFormHandler() {
   const form = document.getElementById('consultationForm');
@@ -162,7 +259,6 @@ function initFormHandler() {
       'input',
       debounce(() => {
         validateField(input);
-        // puoi salvare in localStorage qui se vuoi
       }, 400)
     );
   });
@@ -187,10 +283,9 @@ function initFormHandler() {
       return;
     }
 
-    // Crea FormData (anche con file multipli)
+    // Crea FormData (il name del campo file DEVE essere "allegati" come lato backend)
     const formData = new FormData(form);
 
-    // Loader
     submitButton.disabled = true;
     submitButton.innerHTML = '<span class="spinner"></span> Reindirizzamento...';
 
@@ -202,7 +297,6 @@ function initFormHandler() {
       const data = await response.json();
 
       if (data.url) {
-        // Redirect su Stripe checkout
         window.location.href = data.url;
       } else {
         showMessage(data.error || "Errore nella creazione della sessione di pagamento.");
@@ -259,8 +353,6 @@ function initScrollProgress() {
   updateProgress();
 }
 
-// ===== [Le altre funzioni (initMobileMenu, etc) restano come da base] =====
-
 // ===== TOAST NOTIFICATION =====
 function showToast(message, duration = 3000) {
   const toast = document.createElement('div');
@@ -272,4 +364,9 @@ function showToast(message, duration = 3000) {
     toast.classList.remove('show');
     setTimeout(() => document.body.removeChild(toast), 300);
   }, duration);
+}
+
+// ===== MOBILE TOUCH OPTIMIZATION (OPTIONAL) =====
+function initTouchOptimizations() {
+  // Disabilita double-tap zoom, miglioramenti touch (se vuoi)
 }
