@@ -2,16 +2,487 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Pagamento annullato – Avvocà</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento Annullato - Avvocà</title>
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <meta name="robots" content="noindex, nofollow">
+  
+  <!-- CSS Inline per pagina standalone -->
+  <style>
+    :root {
+      --primary: #0ea5e9;
+      --primary-dark: #0284c7;
+      --warning: #f59e0b;
+      --warning-dark: #d97706;
+      --white: #ffffff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-800: #1e293b;
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .cancel-container {
+      background: var(--white);
+      border-radius: 2rem;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      overflow: hidden;
+    }
+    
+    .cancel-header {
+      background: linear-gradient(135deg, var(--warning), var(--warning-dark));
+      color: var(--white);
+      padding: 3rem 2rem;
+      position: relative;
+    }
+    
+    .cancel-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="white" opacity="0.1"/></svg>');
+      opacity: 0.3;
+    }
+    
+    .cancel-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .cancel-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .cancel-subtitle {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .cancel-body {
+      padding: 3rem 2rem;
+    }
+    
+    .info-box {
+      background: #fffbeb;
+      border: 1px solid var(--warning);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .info-box h3 {
+      color: var(--warning-dark);
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    
+    .info-box p {
+      color: #92400e;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    
+    .what-happened {
+      background: var(--gray-50);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: left;
+    }
+    
+    .what-happened h3 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .reasons-list {
+      list-style: none;
+    }
+    
+    .reasons-list li {
+      padding: 0.75rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .reason-icon {
+      background: var(--warning);
+      color: var(--white);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 0.125rem;
+    }
+    
+    .next-steps {
+      background: #eff6ff;
+      border: 1px solid var(--primary);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .next-steps h3 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    
+    .steps-list {
+      list-style: none;
+      text-align: left;
+    }
+    
+    .steps-list li {
+      padding: 0.75rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .step-icon {
+      background: var(--primary);
+      color: var(--white);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 0.125rem;
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: var(--gray-100);
+      color: var(--text-primary);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    
+    .btn-warning {
+      background: var(--warning);
+      color: var(--white);
+    }
+    
+    .btn-warning:hover {
+      background: var(--warning-dark);
+      transform: translateY(-2px);
+    }
+    
+    .contact-info {
+      background: var(--gray-50);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .contact-info h4 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+    
+    .contact-info p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    
+    .contact-info a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .data-retention {
+      background: #e0f2fe;
+      border: 1px solid var(--primary);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      font-size: 0.875rem;
+    }
+    
+    .data-retention h4 {
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+    
+    .data-retention p {
+      color: #0369a1;
+    }
+    
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .cancel-header {
+        padding: 2rem 1rem;
+      }
+      
+      .cancel-title {
+        font-size: 2rem;
+      }
+      
+      .cancel-body {
+        padding: 2rem 1rem;
+      }
+      
+      .info-box,
+      .what-happened,
+      .next-steps,
+      .contact-info,
+      .data-retention {
+        padding: 1.5rem;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
-<body style="background:#f8f8f8;display:flex;align-items:center;justify-content:center;min-height:100vh;">
-  <div class="cancel-box" style="background:#fff;padding:40px 32px;border-radius:16px;box-shadow:0 2px 16px #ddd;max-width:420px;text-align:center;">
-    <img src="assets/logo-avvoca.jpeg" alt="Avvocà" width="64" style="border-radius:50%;margin-bottom:16px;">
-    <h1 style="color:#cf2323;font-size:2rem;margin-bottom:16px;">Pagamento annullato</h1>
-    <p style="font-size:1.1rem;margin-bottom:24px;">Hai annullato il pagamento.<br>La tua richiesta non è stata presa in carico.</p>
-    <a href="index.html" class="cta-primary" style="background:#cf2323;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;">Torna alla home</a>
+<body>
+  <div class="cancel-container">
+    <div class="cancel-header">
+      <div class="cancel-icon">⚠️</div>
+      <h1 class="cancel-title">Pagamento Annullato</h1>
+      <p class="cancel-subtitle">La transazione è stata interrotta</p>
+    </div>
+    
+    <div class="cancel-body">
+      <div class="info-box">
+        <h3>ℹ️ Nessun addebito effettuato</h3>
+        <p><strong>La tua carta di credito non è stata addebitata.</strong></p>
+        <p>Puoi riprovare il pagamento in qualsiasi momento o contattarci per assistenza.</p>
+      </div>
+      
+      <div class="what-happened">
+        <h3>🤔 Cosa potrebbe essere successo?</h3>
+        <ul class="reasons-list">
+          <li>
+            <div class="reason-icon">1</div>
+            <div>
+              <strong>Chiusura volontaria</strong><br>
+              <small style="color: var(--text-secondary);">Hai chiuso la finestra di pagamento</small>
+            </div>
+          </li>
+          <li>
+            <div class="reason-icon">2</div>
+            <div>
+              <strong>Problemi tecnici</strong><br>
+              <small style="color: var(--text-secondary);">Connessione internet instabile o timeout</small>
+            </div>
+          </li>
+          <li>
+            <div class="reason-icon">3</div>
+            <div>
+              <strong>Problemi con la carta</strong><br>
+              <small style="color: var(--text-secondary);">Fondi insufficienti o carta scaduta</small>
+            </div>
+          </li>
+          <li>
+            <div class="reason-icon">4</div>
+            <div>
+              <strong>Sicurezza bancaria</strong><br>
+              <small style="color: var(--text-secondary);">La banca ha bloccato la transazione per sicurezza</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="data-retention">
+        <h4>🔒 I tuoi dati sono al sicuro</h4>
+        <p>Le informazioni e i documenti che hai fornito sono conservati in modo sicuro per 24 ore, così puoi riprovare il pagamento senza dover reinserire tutto.</p>
+      </div>
+      
+      <div class="next-steps">
+        <h3>💡 Cosa puoi fare ora?</h3>
+        <ul class="steps-list">
+          <li>
+            <div class="step-icon">1</div>
+            <div>
+              <strong>Riprova subito</strong><br>
+              <small style="color: var(--text-secondary);">Torna al servizio e riprova il pagamento</small>
+            </div>
+          </li>
+          <li>
+            <div class="step-icon">2</div>
+            <div>
+              <strong>Prova con un'altra carta</strong><br>
+              <small style="color: var(--text-secondary);">Usa una carta diversa o un metodo di pagamento alternativo</small>
+            </div>
+          </li>
+          <li>
+            <div class="step-icon">3</div>
+            <div>
+              <strong>Contatta la tua banca</strong><br>
+              <small style="color: var(--text-secondary);">Verifica che non ci siano blocchi di sicurezza</small>
+            </div>
+          </li>
+          <li>
+            <div class="step-icon">4</div>
+            <div>
+              <strong>Scrivici per assistenza</strong><br>
+              <small style="color: var(--text-secondary);">Il nostro team è sempre disponibile ad aiutarti</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="buttons">
+        <a href="../index.html" class="btn btn-primary">
+          🔄 Riprova il Pagamento
+        </a>
+        <a href="../index.html" class="btn btn-secondary">
+          🏠 Torna alla Home
+        </a>
+        <a href="mailto:avvocatopasqualegranata@gmail.com" class="btn btn-warning">
+          📧 Chiedi Assistenza
+        </a>
+      </div>
+      
+      <div class="contact-info">
+        <h4>💬 Hai bisogno di aiuto?</h4>
+        <p>
+          Il nostro team è qui per aiutarti a completare la tua consulenza:<br>
+          📧 <a href="mailto:avvocatopasqualegranata@gmail.com">avvocatopasqualegranata@gmail.com</a><br>
+          🌐 <a href="../index.html">avvoca.net</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--text-secondary);">
+          <strong>Orari di supporto:</strong> Lunedì-Venerdì 9:00-18:00<br>
+          Risposta garantita entro 24 ore
+        </p>
+      </div>
+    </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ottieni dati dalla sessione se disponibili
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get('session_id');
+      
+      // Analytics event (se disponibile)
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'checkout_cancel', {
+          'event_category': 'Legal Service',
+          'event_label': 'Payment Cancelled',
+          'session_id': sessionId || 'unknown'
+        });
+      }
+      
+      // Invia notifica al backend per email di cancellazione (opzionale)
+      if (sessionId) {
+        fetch('/payment-cancelled', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sessionId: sessionId,
+            timestamp: new Date().toISOString()
+          })
+        }).catch(err => {
+          console.log('Notifica cancellazione non inviata:', err);
+        });
+      }
+    });
+    
+    // Auto-redirect dopo 10 minuti se utente inattivo
+    let redirectTimer = setTimeout(() => {
+      if (confirm('Vuoi tornare alla homepage per riprovare?')) {
+        window.location.href = '../index.html';
+      }
+    }, 10 * 60 * 1000);
+    
+    // Reset timer su interazione utente
+    ['click', 'scroll', 'keypress'].forEach(event => {
+      document.addEventListener(event, () => {
+        clearTimeout(redirectTimer);
+        redirectTimer = setTimeout(() => {
+          window.location.href = '../index.html';
+        }, 10 * 60 * 1000);
+      }, { once: true });
+    });
+  </script>
 </body>
 </html>

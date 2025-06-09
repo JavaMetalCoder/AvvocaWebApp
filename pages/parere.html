@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parere Legale - Avvocà</title>
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -155,9 +155,14 @@
                             <h3>Documenti Allegati</h3>
                             <div class="form-group">
                                 <label for="documenti">Allegati (opzionale)</label>
-                                <input type="file" id="documenti" name="documenti" 
-                                       multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt">
-                                <small>Formati supportati: PDF, DOC, DOCX, JPG, PNG, TXT (max 10MB per file, max 10 file)</small>
+                                <div class="file-upload-area">
+                                    <input type="file" id="documenti" name="documenti" 
+                                           multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt">
+                                    <div class="file-upload-text">
+                                        <span>📎 Trascina i file qui o clicca per selezionare</span>
+                                        <small>Formati supportati: PDF, DOC, DOCX, JPG, PNG, TXT (max 10MB per file, max 10 file)</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -236,6 +241,6 @@
         </div>
     </div>
 
-    <script src="../script.js"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>
