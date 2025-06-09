@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redazione Contratti – Avvocà</title>
+  <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Richiedi la redazione del tuo contratto online.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Cookie banner -->
+  <div class="cookie-banner">
+    <span>Usiamo cookie per migliorare la tua esperienza.</span>
+    <button id="accept-cookies">Accetta</button>
+  </div>
+
+  <!-- Header / Nav -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="../index.html" class="logo">
+          <div class="logo-img">
+            <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà" loading="lazy">
+          </div>
+          <span class="logo-text">Avvocà</span>
+        </a>
+        <button class="hamburger" aria-label="Menu di navigazione" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="../index.html#come-funziona">Come funziona</a></li>
+          <li><a href="../index.html#aree">Aree</a></li>
+          <li><a href="../index.html#servizi">Servizi</a></li>
+          <li><a href="../index.html#bio">Chi sono</a></li>
+          <li><a href="../index.html#contatti" class="nav-cta">Contatti</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="mobile-overlay"></div>
+  </header>
+
+  <main id="main-content">
+    <div class="container">
+      <a href="../index.html" class="back-link">← Torna alla Home</a>
+      <section class="service-form">
+        <h2>Redazione Contratti</h2>
+        <p class="subtitle-form">Compila il form qui sotto per richiedere la redazione del tuo contratto.</p>
+        <form id="serviceForm" class="contact-form" enctype="multipart/form-data" autocomplete="off">
+          <!-- Nome -->
+          <div class="form-group">
+            <label for="nome">Nome e Cognome *</label>
+            <input type="text" id="nome" name="nome" required placeholder="Il tuo nome e cognome">
+          </div>
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required placeholder="La tua email">
+          </div>
+          <!-- Conferma Email -->
+          <div class="form-group">
+            <label for="email2">Conferma Email *</label>
+            <input type="email" id="email2" name="email2" required placeholder="Ripeti la tua email">
+          </div>
+          <!-- Area di competenza -->
+          <div class="form-group">
+            <label for="macroarea">Area di competenza *</label>
+            <select id="macroarea" name="macroarea" required>
+              <option value="">Scegli l'area...</option>
+              <option value="civile">Diritto Civile</option>
+              <option value="lavoro">Diritto del Lavoro</option>
+              <option value="tributario">Diritto Tributario</option>
+              <option value="famiglia">Diritto di Famiglia</option>
+              <option value="altro">Altro</option>
+            </select>
+          </div>
+          <!-- Descrizione -->
+          <div class="form-group">
+            <label for="descrizione">Descrizione (50–2000 caratteri) *</label>
+            <textarea id="descrizione" name="descrizione" required minlength="50" maxlength="2000"
+              placeholder="Spiega il tuo caso..."></textarea>
+            <div class="char-count" id="descrizione-counter">0/2000</div>
+          </div>
+          <!-- Upload file -->
+          <div class="form-group file-group">
+            <label for="files">Allega documenti di riferimento</label>
+            <input type="file" id="files" name="files" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>
+            <ul class="file-list" id="file-list"></ul>
+          </div>
+          <!-- Submit -->
+          <button type="submit" class="submit-btn">Invia richiesta</button>
+          <div class="form-message" style="display:none;" role="alert"></div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="../pages/privacy.html">Privacy Policy</a>
+          <a href="../pages/termini.html">Termini di Servizio</a>
+          <a href="../pages/disclaimer.html">Disclaimer AI</a>
+          <a href="../pages/cookies.html">Cookie Policy</a>
+        </div>
+        <div class="copyright">
+          <p>© 2025 Avvocà – Avv. Pasquale Granata • 
+            <a href="mailto:avvocatopasqualegranata@gmail.com">avvocatopasqualegranata@gmail.com</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>
