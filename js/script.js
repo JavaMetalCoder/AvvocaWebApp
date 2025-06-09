@@ -1,1507 +1,1530 @@
-/**
- * AVVOCÀ - JAVASCRIPT MODERNO E OTTIMIZZATO
- * Compatibile con il nuovo design azzurro e bianco
- * Con integrazione pagamenti Stripe completa
- */
+// ===== AVVOCÀ - JAVASCRIPT UNIFICATO COMPLETO ===== //
 
-// ===== CONFIGURAZIONE MODERNA =====
+// Configurazione globale
 const CONFIG = {
-  MOBILE_BREAKPOINT: 768,
-  THROTTLE_DELAY: 16,
-  DEBOUNCE_DELAY: 250,
-  TOAST_DURATION: 3000,
-  ANIMATION_DURATION: 600,
-  STORAGE_KEYS: {
-    COOKIES: 'cookiesAccepted',
-    THEME: 'userTheme'
-  },
-  SELECTORS: {
-    hamburger: '.hamburger',
-    navLinks: '.nav-links',
-    overlay: '.mobile-overlay',
-    cookieBanner: '.cookie-banner',
-    acceptCookies: '#accept-cookies',
-    smoothLinks: 'a[href^="#"]',
-    animatedElements: '.step, .area-box, .servizio-card, section h2',
-    serviceCards: '.servizio-card',
-    backButtons: '.back-link',
-    forms: '#serviceForm',
-    fileInputs: 'input[type="file"]',
-    textareas: '#descrizione'
-  }
-};
-
-// ===== CONFIGURAZIONE BACKEND =====
-const BACKEND_CONFIG = {
-  BASE_URL: 'https://avvocawebappbackend.onrender.com',
-  ENDPOINTS: {
-    checkout: '/create-checkout-session',
-    health: '/health',
-    cancel: '/payment-cancelled'
-  }
-};
-
-// ===== UTILITÀ MODERNE =====
-const Utils = {
-  // Query selectors ottimizzati
-  qs: (selector, context = document) => context.querySelector(selector),
-  qsa: (selector, context = document) => Array.from(context.querySelectorAll(selector)),
-
-  // Throttle per performance
-  throttle(fn, limit = CONFIG.THROTTLE_DELAY) {
-    let inThrottle = false;
-    return function executedFunction(...args) {
-      if (!inThrottle) {
-        fn.apply(this, args);
-        inThrottle = true;
-        setTimeout(() => inThrottle = false, limit);
-      }
-    };
-  },
-
-  // Debounce per input
-  debounce(fn, delay = CONFIG.DEBOUNCE_DELAY) {
-    let timeoutId;
-    return function debouncedFunction(...args) {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => fn.apply(this, args), delay);
-    };
-  },
-
-  // Storage sicuro
-  storage: {
-    get(key) {
-      try {
-        return localStorage.getItem(key);
-      } catch (e) {
-        console.warn('Storage access failed:', e);
-        return null;
-      }
-    },
-    set(key, value) {
-      try {
-        localStorage.setItem(key, value);
-        return true;
-      } catch (e) {
-        console.warn('Storage write failed:', e);
-        return false;
-      }
+  backend: {
+    // URL del backend - cambia questo per production
+    baseUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:8080' 
+      : 'https://avvoca-backend.onrender.com', // URL del tuo backend in produzione
+    endpoints: {
+      checkout: '/create-checkout-session',
+      health: '/health'
     }
   },
+  stripe: {
+    // Le chiavi pubbliche possono essere inserite qui o nel backend
+    publishableKey: 'pk_test_...' // Inserisci la tua chiave pubblica Stripe se necessario
+  },
+  validation: {
+    minDescriptionLength: 50,
+    maxFileSize: 10 * 1024 * 1024, // 10MB
+    maxFiles: 10,
+    allowedFileTypes: ['.pdf', '.doc', '.docx', '.txt', '.jpg', '.jpeg', '.png']
+  },
+  ui: {
+    animationDuration: 300,
+    toastDuration: 5000
+  }
+};
 
-  // Toast notification moderna
-  showToast(message, type = 'success', duration = CONFIG.TOAST_DURATION) {
+// ===== UTILITY FUNCTIONS ===== //
+
+// Logger con livelli
+const Logger = {
+  info: (msg, data = null) => {
+    console.log(`ℹ️ ${msg}`, data || '');
+  },
+  error: (msg, error = null) => {
+    console.error(`❌ ${msg}`, error || '');
+  },
+  warning: (msg, data = null) => {
+    console.warn(`⚠️ ${msg}`, data || '');
+  },
+  success: (msg, data = null) => {
+    console.log(`✅ ${msg}`, data || '');
+  }
+};
+
+// Gestione cookie semplificata
+const CookieManager = {
+  set: (name, value, days = 365) => {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+  },
+  
+  get: (name) => {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  },
+  
+  remove: (name) => {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+};
+
+// Sistema di notifiche toast moderne
+const Toast = {
+  show: (message, type = 'info', duration = CONFIG.ui.toastDuration) => {
     // Rimuovi toast esistenti
-    Utils.qsa('.toast').forEach(toast => toast.remove());
-
+    const existingToasts = document.querySelectorAll('.toast');
+    existingToasts.forEach(toast => toast.remove());
+    
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
+    
+    const icons = {
+      success: '✅',
+      error: '❌',
+      warning: '⚠️',
+      info: 'ℹ️'
+    };
+    
     toast.innerHTML = `
       <div class="toast-content">
-        <span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+        <span class="toast-icon">${icons[type] || icons.info}</span>
         <span class="toast-message">${message}</span>
       </div>
     `;
     
-    // Stili dinamici per il toast
-    Object.assign(toast.style, {
-      position: 'fixed',
-      top: '2rem',
-      right: '2rem',
-      background: type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#0ea5e9',
-      color: 'white',
-      padding: '1rem 1.5rem',
-      borderRadius: '1rem',
-      boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
-      transform: 'translateX(100%)',
-      transition: 'transform 0.3s ease',
-      zIndex: '1000',
-      maxWidth: '400px',
-      fontSize: '0.875rem',
-      fontWeight: '500'
-    });
-
-    toast.setAttribute('role', 'alert');
-    toast.setAttribute('aria-live', 'polite');
-
     document.body.appendChild(toast);
-
-    // Animazione entrata
-    requestAnimationFrame(() => {
-      toast.style.transform = 'translateX(0)';
-    });
-
-    // Auto rimozione
+    
+    // Mostra toast
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    // Rimuovi automaticamente
     setTimeout(() => {
-      toast.style.transform = 'translateX(100%)';
-      setTimeout(() => toast.remove(), 300);
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), CONFIG.ui.animationDuration);
     }, duration);
-
+    
     return toast;
-  },
+  }
+};
 
-  // Validazione email
-  isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+// Gestione loading overlay
+const LoadingManager = {
+  show: (message = 'Elaborazione in corso...') => {
+    const existing = document.getElementById('loadingOverlay');
+    if (existing) existing.remove();
+    
+    const overlay = document.createElement('div');
+    overlay.id = 'loadingOverlay';
+    overlay.className = 'loading-overlay';
+    overlay.innerHTML = `
+      <div style="text-align: center; color: #374151;">
+        <div class="loading-spinner"></div>
+        <div style="margin-top: 1rem; font-weight: 500;">${message}</div>
+      </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.style.opacity = '1', 50);
   },
+  
+  hide: () => {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), CONFIG.ui.animationDuration);
+    }
+  }
+};
 
-  // Formattazione dimensione file
-  formatFileSize(bytes) {
-    if (bytes === 0) return '0 B';
+// ===== FORM VALIDATION SYSTEM ===== //
+
+const FormValidator = {
+  rules: {
+    required: (value, fieldName) => {
+      if (!value || value.trim() === '') {
+        return `Il campo ${fieldName} è obbligatorio`;
+      }
+      return null;
+    },
+    
+    email: (value) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        return 'Inserisci un indirizzo email valido';
+      }
+      return null;
+    },
+    
+    emailMatch: (value, compareValue) => {
+      if (value !== compareValue) {
+        return 'Le email non coincidono';
+      }
+      return null;
+    },
+    
+    minLength: (value, minLength) => {
+      if (value.length < minLength) {
+        return `Minimo ${minLength} caratteri richiesti`;
+      }
+      return null;
+    },
+    
+    maxLength: (value, maxLength) => {
+      if (value.length > maxLength) {
+        return `Massimo ${maxLength} caratteri consentiti`;
+      }
+      return null;
+    }
+  },
+  
+  validateField: (field, customRules = []) => {
+    const value = field.value.trim();
+    const fieldName = field.getAttribute('aria-label') || 
+                     field.closest('.form-group')?.querySelector('label')?.textContent?.replace('*', '').trim() ||
+                     field.name;
+    
+    // Rimuovi errori precedenti
+    FormValidator.clearFieldError(field);
+    
+    let error = null;
+    
+    // Validazioni base
+    if (field.hasAttribute('required') && field.type !== 'file') {
+      error = FormValidator.rules.required(value, fieldName);
+      if (error) return FormValidator.showFieldError(field, error);
+    }
+    
+    if (field.type === 'email' && value) {
+      error = FormValidator.rules.email(value);
+      if (error) return FormValidator.showFieldError(field, error);
+    }
+    
+    if (field.hasAttribute('minlength') && value) {
+      const minLength = parseInt(field.getAttribute('minlength'));
+      error = FormValidator.rules.minLength(value, minLength);
+      if (error) return FormValidator.showFieldError(field, error);
+    }
+    
+    if (field.hasAttribute('maxlength') && value) {
+      const maxLength = parseInt(field.getAttribute('maxlength'));
+      error = FormValidator.rules.maxLength(value, maxLength);
+      if (error) return FormValidator.showFieldError(field, error);
+    }
+    
+    // Validazioni personalizzate
+    for (const rule of customRules) {
+      error = rule(value, field);
+      if (error) return FormValidator.showFieldError(field, error);
+    }
+    
+    return true;
+  },
+  
+  showFieldError: (field, message) => {
+    field.classList.add('error');
+    field.setAttribute('aria-invalid', 'true');
+    
+    const errorElement = document.createElement('div');
+    errorElement.className = 'field-error';
+    errorElement.textContent = message;
+    errorElement.setAttribute('role', 'alert');
+    
+    const container = field.closest('.form-group') || field.parentNode;
+    container.appendChild(errorElement);
+    
+    return false;
+  },
+  
+  clearFieldError: (field) => {
+    field.classList.remove('error');
+    field.removeAttribute('aria-invalid');
+    
+    const container = field.closest('.form-group') || field.parentNode;
+    const existingError = container.querySelector('.field-error');
+    if (existingError) {
+      existingError.remove();
+    }
+  },
+  
+  validateForm: (form) => {
+    const fields = form.querySelectorAll('input:not([type="hidden"]), textarea, select');
+    let isValid = true;
+    let firstErrorField = null;
+    
+    fields.forEach(field => {
+      const customRules = [];
+      
+      // Regola personalizzata per conferma email
+      if (field.name === 'email2') {
+        const emailField = form.querySelector('input[name="email"]');
+        if (emailField) {
+          customRules.push((value) => FormValidator.rules.emailMatch(value, emailField.value));
+        }
+      }
+      
+      const fieldValid = FormValidator.validateField(field, customRules);
+      if (!fieldValid) {
+        isValid = false;
+        if (!firstErrorField) {
+          firstErrorField = field;
+        }
+      }
+    });
+    
+    // Validazione checkbox privacy
+    const privacyCheckbox = form.querySelector('input[name="privacy"]');
+    if (privacyCheckbox && !privacyCheckbox.checked) {
+      Toast.show('Devi accettare la Privacy Policy per continuare', 'error');
+      if (!firstErrorField) {
+        firstErrorField = privacyCheckbox;
+      }
+      isValid = false;
+    }
+    
+    // Focus sul primo errore
+    if (firstErrorField) {
+      firstErrorField.focus();
+      firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    return isValid;
+  }
+};
+
+// ===== FILE UPLOAD MANAGER ===== //
+
+const FileManager = {
+  init: (input) => {
+    const container = input.closest('.file-group');
+    if (!container) return;
+    
+    const dropZone = container.querySelector('.file-drop-zone');
+    if (!dropZone) return;
+    
+    // Drag and drop
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, FileManager.preventDefaults, false);
+    });
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.add('drag-over'), false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.remove('drag-over'), false);
+    });
+    
+    dropZone.addEventListener('drop', (e) => FileManager.handleDrop(e, input), false);
+    
+    // File selection
+    input.addEventListener('change', (e) => FileManager.handleFiles(e.target.files, input));
+  },
+  
+  preventDefaults: (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  },
+  
+  handleDrop: (e, input) => {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    FileManager.handleFiles(files, input);
+  },
+  
+  handleFiles: (files, input) => {
+    const container = input.closest('.file-group');
+    const validFiles = [];
+    
+    // Validazione file
+    Array.from(files).forEach(file => {
+      const errors = FileManager.validateFile(file);
+      if (errors.length === 0) {
+        validFiles.push(file);
+      } else {
+        errors.forEach(error => Toast.show(error, 'error'));
+      }
+    });
+    
+    if (validFiles.length === 0) return;
+    
+    // Limita numero file
+    if (validFiles.length > CONFIG.validation.maxFiles) {
+      Toast.show(`Massimo ${CONFIG.validation.maxFiles} file consentiti`, 'warning');
+      validFiles.splice(CONFIG.validation.maxFiles);
+    }
+    
+    // Aggiorna input
+    const dt = new DataTransfer();
+    validFiles.forEach(file => dt.items.add(file));
+    input.files = dt.files;
+    
+    // Mostra lista file
+    FileManager.displayFileList(validFiles, container);
+    
+    Logger.success(`${validFiles.length} file caricati correttamente`);
+  },
+  
+  validateFile: (file) => {
+    const errors = [];
+    
+    // Dimensione
+    if (file.size > CONFIG.validation.maxFileSize) {
+      errors.push(`File "${file.name}" troppo grande (max 10MB)`);
+    }
+    
+    // Tipo
+    const extension = '.' + file.name.split('.').pop().toLowerCase();
+    if (!CONFIG.validation.allowedFileTypes.includes(extension)) {
+      errors.push(`Tipo file "${extension}" non supportato per "${file.name}"`);
+    }
+    
+    return errors;
+  },
+  
+  displayFileList: (files, container) => {
+    let listElement = container.querySelector('.file-list');
+    if (!listElement) {
+      listElement = document.createElement('ul');
+      listElement.className = 'file-list';
+      container.appendChild(listElement);
+    }
+    
+    listElement.innerHTML = '';
+    
+    Array.from(files).forEach((file, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span>${file.name} (${FileManager.formatFileSize(file.size)})</span>
+        <button type="button" class="file-remove" onclick="FileManager.removeFile(${index}, this)">×</button>
+      `;
+      listElement.appendChild(li);
+    });
+  },
+  
+  removeFile: (index, button) => {
+    const container = button.closest('.file-group');
+    const input = container.querySelector('input[type="file"]');
+    
+    const dt = new DataTransfer();
+    Array.from(input.files).forEach((file, i) => {
+      if (i !== index) dt.items.add(file);
+    });
+    
+    input.files = dt.files;
+    FileManager.displayFileList(input.files, container);
+    
+    if (input.files.length === 0) {
+      const fileList = container.querySelector('.file-list');
+      if (fileList) fileList.remove();
+    }
+  },
+  
+  formatFileSize: (bytes) => {
+    if (bytes === 0) return '0 Bytes';
     const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const sizes = ['Bytes', 'KB', 'MB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   }
 };
 
-// ===== GESTIONE MOBILE MENU MODERNA =====
-class MobileMenu {
-  constructor() {
-    this.hamburger = Utils.qs(CONFIG.SELECTORS.hamburger);
-    this.navLinks = Utils.qs(CONFIG.SELECTORS.navLinks);
-    this.overlay = Utils.qs(CONFIG.SELECTORS.overlay);
-    this.isOpen = false;
-    this.focusableElements = [];
+// ===== CHARACTER COUNTERS ===== //
 
-    if (this.hamburger && this.navLinks) {
-      this.init();
-    }
-  }
-
-  init() {
-    this.bindEvents();
-    this.setupAccessibility();
-  }
-
-  bindEvents() {
-    // Toggle menu
-    this.hamburger.addEventListener('click', () => this.toggle());
+const CharacterCounter = {
+  init: (textarea) => {
+    const maxLength = parseInt(textarea.getAttribute('maxlength'));
+    if (!maxLength) return;
     
-    // Close su overlay click
-    this.overlay?.addEventListener('click', () => this.close());
-
-    // Close su link click
-    Utils.qsa('a', this.navLinks).forEach(link => {
-      link.addEventListener('click', () => this.close());
-    });
-
-    // Responsive handling
-    const handleResize = Utils.debounce(() => {
-      if (window.innerWidth > CONFIG.MOBILE_BREAKPOINT && this.isOpen) {
-        this.close();
-      }
-    });
-
-    window.addEventListener('resize', handleResize);
-
-    // Escape key handling
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isOpen) {
-        this.close();
-        this.hamburger.focus();
-      }
-    });
-  }
-
-  setupAccessibility() {
-    this.focusableElements = Utils.qsa(
-      'a, button, [tabindex]:not([tabindex="-1"])',
-      this.navLinks
-    );
-
-    this.hamburger.setAttribute('aria-expanded', 'false');
-    this.hamburger.setAttribute('aria-controls', 'mobile-nav');
-    this.navLinks.setAttribute('id', 'mobile-nav');
-  }
-
-  toggle() {
-    this.isOpen ? this.close() : this.open();
-  }
-
-  open() {
-    this.isOpen = true;
-    this.updateDOM();
-    this.trapFocus();
-    document.body.style.overflow = 'hidden';
-  }
-
-  close() {
-    this.isOpen = false;
-    this.updateDOM();
-    document.body.style.overflow = '';
-  }
-
-  updateDOM() {
-    this.hamburger.classList.toggle('active', this.isOpen);
-    this.navLinks.classList.toggle('active', this.isOpen);
-    this.overlay?.classList.toggle('active', this.isOpen);
-    this.hamburger.setAttribute('aria-expanded', this.isOpen);
-  }
-
-  trapFocus() {
-    if (!this.isOpen || !this.focusableElements.length) return;
-
-    const firstElement = this.focusableElements[0];
-    const lastElement = this.focusableElements[this.focusableElements.length - 1];
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Tab') {
-        if (e.shiftKey && document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();
-        } else if (!e.shiftKey && document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();
+    const container = textarea.closest('.form-group');
+    if (!container) return;
+    
+    let counter = container.querySelector('.char-count span');
+    if (!counter) {
+      // Cerca pattern esistente o crea nuovo
+      const existingCounter = container.querySelector('[id$="-counter"]');
+      if (existingCounter) {
+        counter = existingCounter;
+      } else {
+        const counterDiv = document.createElement('div');
+        counterDiv.className = 'char-count';
+        counterDiv.innerHTML = `<span>0/${maxLength}</span>`;
+        counter = counterDiv.querySelector('span');
+        
+        // Inserisci dopo il textarea
+        const fieldHelp = container.querySelector('.field-help');
+        if (fieldHelp) {
+          fieldHelp.parentNode.insertBefore(counterDiv, fieldHelp);
+        } else {
+          container.appendChild(counterDiv);
         }
       }
-    };
-
-    this.navLinks.addEventListener('keydown', handleKeyDown);
-    requestAnimationFrame(() => firstElement.focus());
-  }
-}
-
-// ===== GESTIONE COOKIE BANNER =====
-class CookieBanner {
-  constructor() {
-    this.banner = Utils.qs(CONFIG.SELECTORS.cookieBanner);
-    this.acceptBtn = Utils.qs(CONFIG.SELECTORS.acceptCookies);
-    
-    if (this.banner && this.acceptBtn) {
-      this.init();
     }
-  }
-
-  init() {
-    const accepted = Utils.storage.get(CONFIG.STORAGE_KEYS.COOKIES) === 'true';
     
-    if (accepted) {
-      this.banner.style.display = 'none';
+    const updateCounter = () => {
+      const currentLength = textarea.value.length;
+      counter.textContent = `${currentLength}/${maxLength}`;
+      
+      const counterContainer = counter.closest('.char-count');
+      if (currentLength > maxLength * 0.9) {
+        counterContainer.classList.add('warning');
+      } else {
+        counterContainer.classList.remove('warning');
+      }
+      
+      if (currentLength > maxLength) {
+        counterContainer.classList.add('error');
+      } else {
+        counterContainer.classList.remove('error');
+      }
+    };
+    
+    textarea.addEventListener('input', updateCounter);
+    textarea.addEventListener('paste', () => setTimeout(updateCounter, 10));
+    updateCounter(); // Inizializza
+  }
+};
+
+// ===== MOBILE MENU ===== //
+
+const MobileMenu = {
+  init: () => {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const overlay = document.querySelector('.mobile-overlay');
+    
+    if (!hamburger || !navLinks) return;
+    
+    hamburger.addEventListener('click', MobileMenu.toggle);
+    
+    if (overlay) {
+      overlay.addEventListener('click', MobileMenu.close);
+    }
+    
+    // Chiudi menu su link click
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', MobileMenu.close);
+    });
+    
+    // Chiudi su Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') MobileMenu.close();
+    });
+  },
+  
+  toggle: () => {
+    const hamburger = document.querySelector('.hamburger');
+    const isOpen = hamburger.classList.contains('active');
+    
+    if (isOpen) {
+      MobileMenu.close();
+    } else {
+      MobileMenu.open();
+    }
+  },
+  
+  open: () => {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const overlay = document.querySelector('.mobile-overlay');
+    
+    hamburger.classList.add('active');
+    navLinks.classList.add('active');
+    if (overlay) overlay.classList.add('active');
+    
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  },
+  
+  close: () => {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const overlay = document.querySelector('.mobile-overlay');
+    
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+    
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+};
+
+// ===== COOKIE BANNER ===== //
+
+const CookieBanner = {
+  init: () => {
+    const banner = document.querySelector('.cookie-banner');
+    const acceptBtn = document.getElementById('accept-cookies');
+    
+    if (!banner) return;
+    
+    // Mostra banner se non accettato
+    if (!CookieManager.get('cookies_accepted')) {
+      setTimeout(() => {
+        banner.style.display = 'flex';
+        banner.classList.remove('hide');
+      }, 2000);
+    }
+    
+    if (acceptBtn) {
+      acceptBtn.addEventListener('click', CookieBanner.accept);
+    }
+  },
+  
+  accept: () => {
+    const banner = document.querySelector('.cookie-banner');
+    
+    CookieManager.set('cookies_accepted', 'true', 365);
+    
+    if (banner) {
+      banner.classList.add('hide');
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, CONFIG.ui.animationDuration);
+    }
+    
+    Logger.info('Cookie accettati');
+  }
+};
+
+// ===== STRIPE PAYMENT INTEGRATION ===== //
+
+const PaymentManager = {
+  processing: false,
+  
+  async processPayment(formData, files) {
+    if (PaymentManager.processing) {
+      Toast.show('Pagamento già in corso...', 'warning');
       return;
     }
-
-    this.bindEvents();
-    this.banner.style.display = 'flex';
-  }
-
-  bindEvents() {
-    this.acceptBtn.addEventListener('click', () => this.accept());
-  }
-
-  accept() {
-    Utils.storage.set(CONFIG.STORAGE_KEYS.COOKIES, 'true');
-    this.banner.classList.add('hide');
     
-    setTimeout(() => {
-      this.banner.style.display = 'none';
-    }, 300);
-
-    Utils.showToast('Cookie accettati! 🍪', 'success');
+    PaymentManager.processing = true;
+    LoadingManager.show('Creazione sessione di pagamento...');
+    
+    try {
+      // Rileva il tipo di servizio dalla URL o dal form
+      const servizio = PaymentManager.detectService();
+      Logger.info(`Servizio rilevato: ${servizio}`);
+      
+      // Prepara FormData per l'invio
+      const submitData = new FormData();
+      
+      // Aggiungi tutti i campi del form
+      for (const [key, value] of Object.entries(formData)) {
+        if (value !== null && value !== undefined) {
+          submitData.append(key, value);
+        }
+      }
+      
+      // Aggiungi il servizio
+      submitData.append('servizio', servizio);
+      
+      // Aggiungi file se presenti
+      if (files && files.length > 0) {
+        Array.from(files).forEach(file => {
+          submitData.append('documenti', file);
+        });
+        Logger.info(`${files.length} file aggiunti alla richiesta`);
+      }
+      
+      // Chiamata al backend per creare sessione Stripe
+      const response = await fetch(`${CONFIG.backend.baseUrl}${CONFIG.backend.endpoints.checkout}`, {
+        method: 'POST',
+        body: submitData
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Errore di comunicazione' }));
+        throw new Error(errorData.error || `Errore HTTP ${response.status}`);
+      }
+      
+      const { url, sessionId } = await response.json();
+      
+      if (!url) {
+        throw new Error('URL di pagamento non ricevuto dal server');
+      }
+      
+      Logger.success('Sessione di pagamento creata, reindirizzamento a Stripe...');
+      LoadingManager.hide();
+      
+      // Reindirizza a Stripe Checkout
+      window.location.href = url;
+      
+    } catch (error) {
+      Logger.error('Errore durante il pagamento:', error);
+      LoadingManager.hide();
+      
+      let errorMessage = 'Si è verificato un errore durante la creazione del pagamento.';
+      
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        errorMessage = 'Problema di connessione. Verifica la tua connessione internet e riprova.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      Toast.show(errorMessage, 'error', 8000);
+      
+    } finally {
+      PaymentManager.processing = false;
+    }
+  },
+  
+  detectService() {
+    // Prima prova a rilevare dalla URL
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('parere')) return 'parere';
+    if (path.includes('revisione')) return 'revisione';
+    if (path.includes('redazione')) return 'redazione';
+    
+    // Prova dal campo del form se presente
+    const serviceField = document.querySelector('input[name="servizio"]');
+    if (serviceField && serviceField.value) {
+      return serviceField.value;
+    }
+    
+    // Prova dal titolo della pagina
+    const title = document.title.toLowerCase();
+    if (title.includes('parere')) return 'parere';
+    if (title.includes('revisione')) return 'revisione';
+    if (title.includes('redazione')) return 'redazione';
+    
+    // Default
+    Logger.warning('Servizio non rilevato, uso default: parere');
+    return 'parere';
   }
-}
+};
 
-// ===== SMOOTH SCROLL MIGLIORATO =====
-class SmoothScroll {
-  constructor() {
-    this.headerHeight = Utils.qs('header')?.offsetHeight || 80;
-    this.init();
-  }
+// ===== FORM SUBMISSION HANDLER ===== //
 
-  init() {
-    Utils.qsa(CONFIG.SELECTORS.smoothLinks).forEach(link => {
-      link.addEventListener('click', (e) => this.handleClick(e, link));
+const FormHandler = {
+  init: () => {
+    const serviceForm = document.getElementById('serviceForm');
+    if (!serviceForm) return;
+    
+    serviceForm.addEventListener('submit', FormHandler.handleSubmit);
+    
+    // Inizializza validazione real-time
+    const fields = serviceForm.querySelectorAll('input:not([type="hidden"]), textarea, select');
+    fields.forEach(field => {
+      // Validazione on blur
+      field.addEventListener('blur', () => {
+        if (field.value.trim() || field.type === 'email') {
+          FormValidator.validateField(field);
+        }
+      });
+      
+      // Rimuovi errori on input
+      field.addEventListener('input', () => {
+        if (field.classList.contains('error')) {
+          FormValidator.clearFieldError(field);
+        }
+      });
     });
-  }
-
-  handleClick(e, link) {
-    const targetId = link.getAttribute('href');
     
-    if (targetId.length <= 1) return;
-
-    const targetElement = Utils.qs(targetId);
-    if (!targetElement) return;
-
+    Logger.info('Form handler inizializzato');
+  },
+  
+  async handleSubmit(e) {
     e.preventDefault();
+    
+    const form = e.target;
+    const submitButton = form.querySelector('.submit-btn');
+    
+    Logger.info('Invio form iniziato');
+    
+    try {
+      // Disabilita pulsante
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.style.opacity = '0.6';
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '<span class="loading-spinner" style="width: 20px; height: 20px; margin-right: 8px;"></span>Elaborazione...';
+      }
+      
+      // Validazione completa
+      if (!FormValidator.validateForm(form)) {
+        Logger.warning('Validazione form fallita');
+        return;
+      }
+      
+      // Raccogli dati del form
+      const formData = FormHandler.collectFormData(form);
+      Logger.info('Dati form raccolti:', Object.keys(formData));
+      
+      // Raccogli file
+      const fileInput = form.querySelector('input[type="file"]');
+      const files = fileInput ? fileInput.files : null;
+      
+      // Avvia processo di pagamento
+      await PaymentManager.processPayment(formData, files);
+      
+    } catch (error) {
+      Logger.error('Errore durante l\'invio:', error);
+      Toast.show('Si è verificato un errore. Riprova.', 'error');
+      
+    } finally {
+      // Riabilita pulsante
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+        const servizio = PaymentManager.detectService();
+        const icon = servizio === 'parere' ? '💳' : servizio === 'revisione' ? '🔍' : '✒️';
+        submitButton.innerHTML = `<span class="submit-icon">${icon}</span>Procedi al Pagamento Sicuro`;
+      }
+    }
+  },
+  
+  collectFormData(form) {
+    const formData = {};
+    const inputs = form.querySelectorAll('input:not([type="file"]), textarea, select');
+    
+    inputs.forEach(input => {
+      if (input.type === 'checkbox') {
+        formData[input.name] = input.checked;
+      } else if (input.type === 'radio') {
+        if (input.checked) {
+          formData[input.name] = input.value;
+        }
+      } else {
+        formData[input.name] = input.value.trim();
+      }
+    });
+    
+    // Rimuovi campi vuoti (eccetto checkbox)
+    Object.keys(formData).forEach(key => {
+      if (formData[key] === '' && typeof formData[key] !== 'boolean') {
+        delete formData[key];
+      }
+    });
+    
+    return formData;
+  }
+};
 
-    const targetPosition = targetElement.getBoundingClientRect().top + 
-                          window.pageYOffset - 
-                          this.headerHeight - 20;
+// ===== SMOOTH SCROLLING ===== //
 
+const SmoothScroll = {
+  init: () => {
+    // Gestisce link interni con smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', SmoothScroll.handleClick);
+    });
+  },
+  
+  handleClick(e) {
+    const href = e.target.getAttribute('href');
+    if (!href || href === '#') return;
+    
+    const target = document.querySelector(href);
+    if (!target) return;
+    
+    e.preventDefault();
+    
+    const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+    const targetPosition = target.offsetTop - headerHeight - 20;
+    
     window.scrollTo({
-      top: Math.max(0, targetPosition),
+      top: targetPosition,
       behavior: 'smooth'
     });
+  }
+};
 
-    // Update URL e focus per accessibilità
-    history.pushState(null, '', targetId);
+// ===== INTERSECTION OBSERVER ANIMATIONS ===== //
+
+const AnimationManager = {
+  init: () => {
+    if (!('IntersectionObserver' in window)) return;
     
-    // Focus management
-    setTimeout(() => {
-      targetElement.setAttribute('tabindex', '-1');
-      targetElement.focus();
-      
-      // Rimuovi tabindex dopo il focus
-      setTimeout(() => {
-        targetElement.removeAttribute('tabindex');
-      }, 1000);
-    }, 500);
-  }
-}
-
-// ===== ANIMAZIONI SCROLL OTTIMIZZATE =====
-class ScrollAnimations {
-  constructor() {
-    this.elements = Utils.qsa(CONFIG.SELECTORS.animatedElements);
-    if (this.elements.length) {
-      this.init();
-    }
-  }
-
-  init() {
-    // Usa Intersection Observer per performance migliori
-    this.observer = new IntersectionObserver(
-      (entries) => this.handleIntersection(entries),
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animated');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
       {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
       }
     );
-
-    this.elements.forEach(el => this.observer.observe(el));
-  }
-
-  handleIntersection(entries) {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        // Aggiungi un piccolo delay per effetto cascata
-        const delay = Array.from(this.elements).indexOf(entry.target) * 100;
-        
-        setTimeout(() => {
-          entry.target.classList.add('animated');
-        }, Math.min(delay, 500));
-        
-        this.observer.unobserve(entry.target);
-      }
+    
+    // Elementi da animare
+    const elementsToAnimate = document.querySelectorAll('.step, .area-box, .servizio-card, section h2, .process-step, .detail-item');
+    elementsToAnimate.forEach(el => {
+      observer.observe(el);
     });
-  }
-}
-
-// ===== SERVICE CARDS NAVIGATION =====
-class ServiceCards {
-  constructor() {
-    this.cards = Utils.qsa(CONFIG.SELECTORS.serviceCards);
-    this.pageMapping = {
-      0: '/pages/parere.html',
-      1: '/pages/revisione.html', 
-      2: '/pages/redazione.html'
-    };
-    
-    if (this.cards.length) {
-      this.init();
-    }
-  }
-
-  init() {
-    this.cards.forEach((card, index) => {
-      this.setupCard(card, index);
-    });
-  }
-
-  setupCard(card, index) {
-    const url = this.pageMapping[index];
-    if (!url) return;
-
-    // Accessibilità
-    card.setAttribute('role', 'button');
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('aria-label', `Vai al servizio ${card.querySelector('h3')?.textContent}`);
-
-    // Event handlers
-    const navigate = () => {
-      // Aggiungi loading state
-      card.style.opacity = '0.7';
-      card.style.transform = 'scale(0.98)';
-      
-      setTimeout(() => {
-        window.location.href = url;
-      }, 150);
-    };
-    
-    card.addEventListener('click', navigate);
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        navigate();
-      }
-    });
-
-    // Hover effects migliorati
-    card.addEventListener('mouseenter', () => {
-      card.style.cursor = 'pointer';
-    });
-  }
-}
-
-// ===== PAYMENT MANAGER - INTEGRAZIONE STRIPE =====
-class PaymentManager {
-  constructor() {
-    this.isProcessing = false;
-    this.sessionData = null;
-    this.init();
-  }
-
-  init() {
-    console.log('💳 PaymentManager inizializzato');
-    this.testBackendConnection();
-  }
-
-  async testBackendConnection() {
-    try {
-      console.log('🔍 Test connessione backend...');
-      const response = await fetch(`${BACKEND_CONFIG.BASE_URL}${BACKEND_CONFIG.ENDPOINTS.health}`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('✅ Backend connesso:', data);
-        return true;
-      } else {
-        console.warn('⚠️ Backend risponde ma con errore:', response.status);
-        return false;
-      }
-    } catch (error) {
-      console.error('❌ Backend non raggiungibile:', error);
-      Utils.showToast('Servizio temporaneamente non disponibile', 'error', 4000);
-      return false;
-    }
-  }
-
-  async processPayment(formData) {
-    if (this.isProcessing) {
-      Utils.showToast('Pagamento già in corso...', 'warning');
-      return false;
-    }
-
-    console.log('🚀 Avvio processo di pagamento...');
-    
-    try {
-      this.isProcessing = true;
-      
-      // Step 1: Prepara dati
-      const paymentData = this.preparePaymentData(formData);
-      console.log('📋 Dati preparati:', Object.fromEntries(paymentData.entries()));
-
-      // Step 2: Chiamata al backend
-      console.log('📡 Invio richiesta al backend...');
-      const response = await fetch(`${BACKEND_CONFIG.BASE_URL}${BACKEND_CONFIG.ENDPOINTS.checkout}`, {
-        method: 'POST',
-        body: paymentData // FormData per supportare file upload
-      });
-
-      console.log(`📊 Response status: ${response.status}`);
-
-      // Step 3: Gestione risposta
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ Errore backend:', errorText);
-        
-        let errorMessage = 'Errore durante la creazione del pagamento';
-        try {
-          const errorData = JSON.parse(errorText);
-          errorMessage = errorData.error || errorMessage;
-        } catch (e) {
-          // Usa messaggio di default se non è JSON
-        }
-        
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
-      console.log('✅ Response data:', data);
-
-      // Step 4: Validazione risposta
-      if (!data.url || !data.sessionId) {
-        console.error('❌ Risposta incompleta:', data);
-        throw new Error('Risposta del server incompleta');
-      }
-
-      // Step 5: Salva session data
-      this.sessionData = {
-        sessionId: data.sessionId,
-        timestamp: Date.now(),
-        formData: Object.fromEntries(paymentData.entries())
-      };
-
-      // Step 6: Redirect a Stripe
-      console.log('🔗 Redirect a Stripe Checkout...');
-      Utils.showToast('Reindirizzamento a Stripe...', 'info', 2000);
-      
-      // Piccolo delay per mostrare il messaggio
-      setTimeout(() => {
-        window.location.href = data.url;
-      }, 500);
-
-      return true;
-
-    } catch (error) {
-      console.error('💥 Errore pagamento:', error);
-      this.handlePaymentError(error);
-      return false;
-    } finally {
-      // Reset processing dopo un delay per evitare click multipli rapidi
-      setTimeout(() => {
-        this.isProcessing = false;
-      }, 2000);
-    }
-  }
-
-  preparePaymentData(formData) {
-    // Rileva il servizio dalla pagina corrente se non presente
-    if (!formData.get('servizio')) {
-      const currentPage = window.location.pathname.toLowerCase();
-      let servizio = 'parere'; // default
-      
-      if (currentPage.includes('parere')) servizio = 'parere';
-      else if (currentPage.includes('revisione')) servizio = 'revisione';
-      else if (currentPage.includes('redazione')) servizio = 'redazione';
-      
-      formData.set('servizio', servizio);
-      console.log(`🎯 Servizio rilevato: ${servizio}`);
-    }
-
-    // Aggiungi timestamp per tracking
-    formData.set('timestamp', new Date().toISOString());
-    
-    return formData;
-  }
-
-  handlePaymentError(error) {
-    let errorMessage = 'Si è verificato un errore durante il pagamento. ';
-    
-    // Messaggi di errore specifici
-    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-      errorMessage += 'Controlla la tua connessione internet e riprova.';
-    } else if (error.message.includes('500')) {
-      errorMessage += 'Problema temporaneo del server. Riprova tra qualche minuto.';
-    } else if (error.message.includes('400') || error.message.includes('validation')) {
-      errorMessage += 'Verifica che tutti i campi siano compilati correttamente.';
-    } else if (error.message.includes('timeout')) {
-      errorMessage += 'Richiesta scaduta. Riprova.';
-    } else {
-      errorMessage += error.message || 'Errore sconosciuto.';
-    }
-
-    Utils.showToast(errorMessage, 'error', 6000);
-  }
-
-  // Metodo per gestire il ritorno da Stripe (se necessario)
-  handleStripeReturn() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sessionId = urlParams.get('session_id');
-    
-    if (sessionId) {
-      console.log('🎉 Ritorno da Stripe con session:', sessionId);
-      // Qui potresti fare verifiche aggiuntive se necessario
-    }
-  }
-}
-
-// ===== FORM ENHANCEMENTS AVANZATI =====
-class FormEnhancements {
-  constructor() {
-    this.forms = Utils.qsa(CONFIG.SELECTORS.forms);
-    this.paymentManager = new PaymentManager();
-    
-    if (this.forms.length) {
-      this.init();
-    }
-  }
-
-  init() {
-    this.setupCharacterCounters();
-    this.setupFileInputs();
-    this.setupFormValidation();
-    this.setupRealTimeValidation();
-  }
-
-  setupCharacterCounters() {
-    const textarea = Utils.qs(CONFIG.SELECTORS.textareas);
-    const counter = Utils.qs('#descrizione-counter');
-    
-    if (!textarea || !counter) return;
-
-    const updateCounter = () => {
-      const length = textarea.value.length;
-      const maxLength = parseInt(textarea.getAttribute('maxlength')) || 2000;
-      const minLength = parseInt(textarea.getAttribute('minlength')) || 50;
-      
-      counter.textContent = `${length}/${maxLength}`;
-      
-      // Aggiorna stili basati sulla lunghezza
-      counter.classList.remove('text-red-500', 'text-yellow-500', 'text-green-500');
-      
-      if (length < minLength) {
-        counter.classList.add('text-red-500');
-        counter.style.color = '#ef4444';
-      } else if (length < minLength + 20) {
-        counter.classList.add('text-yellow-500');
-        counter.style.color = '#f59e0b';
-      } else {
-        counter.classList.add('text-green-500');
-        counter.style.color = '#10b981';
-      }
-    };
-
-    textarea.addEventListener('input', updateCounter);
-    textarea.addEventListener('paste', () => setTimeout(updateCounter, 10));
-    updateCounter(); // Initial call
-  }
-
-  setupFileInputs() {
-    Utils.qsa(CONFIG.SELECTORS.fileInputs).forEach(input => {
-      const listContainer = this.createFileList(input);
-      
-      input.addEventListener('change', () => {
-        this.updateFileList(input, listContainer);
-      });
-
-      // Drag & drop support
-      this.setupDragDrop(input);
-    });
-  }
-
-  createFileList(input) {
-    let list = input.parentNode.querySelector('.file-list');
-    
-    if (!list) {
-      list = document.createElement('ul');
-      list.className = 'file-list';
-      list.setAttribute('aria-label', 'File selezionati');
-      input.parentNode.appendChild(list);
-    }
-    
-    return list;
-  }
-
-  updateFileList(input, listContainer) {
-    listContainer.innerHTML = '';
-    
-    Array.from(input.files).forEach((file, index) => {
-      const listItem = this.createFileListItem(file, index, input);
-      listContainer.appendChild(listItem);
-    });
-
-    // Feedback visivo
-    if (input.files.length > 0) {
-      Utils.showToast(`${input.files.length} file${input.files.length > 1 ? 's' : ''} selezionato${input.files.length > 1 ? 'i' : ''}`, 'success', 2000);
-    }
-  }
-
-  createFileListItem(file, index, input) {
-    const li = document.createElement('li');
-    li.innerHTML = `
-      <div class="file-info">
-        <span class="file-name">${file.name}</span>
-        <span class="file-size">(${Utils.formatFileSize(file.size)})</span>
-      </div>
-      <button type="button" class="file-remove" aria-label="Rimuovi ${file.name}">
-        ×
-      </button>
-    `;
-    
-    li.querySelector('.file-remove').addEventListener('click', () => {
-      this.removeFile(input, index);
-    });
-    
-    return li;
-  }
-
-  removeFile(input, indexToRemove) {
-    const dt = new DataTransfer();
-    
-    Array.from(input.files).forEach((file, index) => {
-      if (index !== indexToRemove) {
-        dt.items.add(file);
-      }
-    });
-    
-    input.files = dt.files;
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-
-  setupDragDrop(input) {
-    const dropZone = input.parentNode;
-    
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      });
-    });
-
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropZone.addEventListener(eventName, () => {
-        dropZone.classList.add('drag-over');
-      });
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, () => {
-        dropZone.classList.remove('drag-over');
-      });
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-      const files = e.dataTransfer.files;
-      input.files = files;
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-    });
-  }
-
-  setupRealTimeValidation() {
-    this.forms.forEach(form => {
-      // Validazione email
-      const emailInputs = Utils.qsa('input[type="email"]', form);
-      emailInputs.forEach(input => {
-        const validateEmail = Utils.debounce(() => {
-          const isValid = Utils.isValidEmail(input.value);
-          this.updateFieldValidation(input, isValid || input.value === '');
-        }, 500);
-
-        input.addEventListener('input', validateEmail);
-        input.addEventListener('blur', validateEmail);
-      });
-
-      // Validazione conferma email
-      const email2 = Utils.qs('input[name="email2"]', form);
-      const email1 = Utils.qs('input[name="email"]', form);
-      
-      if (email1 && email2) {
-        const validateEmailMatch = () => {
-          const matches = email1.value === email2.value;
-          this.updateFieldValidation(email2, matches || email2.value === '');
-        };
-
-        email2.addEventListener('input', Utils.debounce(validateEmailMatch, 300));
-        email2.addEventListener('blur', validateEmailMatch);
-      }
-
-      // Validazione campi required
-      Utils.qsa('input[required], textarea[required], select[required]', form).forEach(field => {
-        const validateRequired = () => {
-          const isValid = field.value.trim() !== '';
-          this.updateFieldValidation(field, isValid);
-        };
-
-        field.addEventListener('blur', validateRequired);
-      });
-    });
-  }
-
-  updateFieldValidation(field, isValid) {
-    field.classList.remove('input-error', 'input-success');
-    
-    if (field.value !== '') {
-      field.classList.add(isValid ? 'input-success' : 'input-error');
-    }
-  }
-
-  setupFormValidation() {
-    this.forms.forEach(form => {
-      form.addEventListener('submit', (e) => this.handleFormSubmit(e, form));
-    });
-  }
-
-  async handleFormSubmit(e, form) {
-    e.preventDefault();
-    
-    if (!this.validateForm(form)) return;
-
-    const submitBtn = form.querySelector('.submit-btn, button[type="submit"], input[type="submit"]');
-    const originalText = submitBtn?.textContent || submitBtn?.value || 'Invia';
-    
-    try {
-      // UI Loading state
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        if (submitBtn.tagName === 'BUTTON') {
-          submitBtn.innerHTML = `
-            <span>Elaborazione...</span>
-            <div class="spinner"></div>
-          `;
-        } else {
-          submitBtn.value = 'Elaborazione...';
-        }
-      }
-      
-      // Processa il pagamento
-      const formData = new FormData(form);
-      const success = await this.paymentManager.processPayment(formData);
-      
-      if (!success) {
-        // Errore già gestito nel PaymentManager
-        return;
-      }
-      
-      // Se arriviamo qui, il redirect dovrebbe essere già partito
-      // Ma aggiungiamo un fallback
-      setTimeout(() => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          if (submitBtn.tagName === 'BUTTON') {
-            submitBtn.textContent = originalText;
-          } else {
-            submitBtn.value = originalText;
-          }
-        }
-      }, 5000);
-      
-    } catch (error) {
-      console.error('Form submission error:', error);
-      Utils.showToast('Errore durante l\'invio. Riprova.', 'error');
-      
-      // Ripristina UI
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        if (submitBtn.tagName === 'BUTTON') {
-          submitBtn.textContent = originalText;
-        } else {
-          submitBtn.value = originalText;
-        }
-      }
-    }
-  }
-
-  validateForm(form) {
-    const formData = new FormData(form);
-    const errors = [];
-
-    // Validazione email
-    const email = formData.get('email');
-    const email2 = formData.get('email2');
-    
-    if (email && email2 && email !== email2) {
-      errors.push('Le email non coincidono');
-    }
-
-    if (email && !Utils.isValidEmail(email)) {
-      errors.push('Email non valida');
-    }
-
-    // Validazione descrizione
-    const description = formData.get('descrizione');
-    if (description && description.length < 50) {
-      errors.push('La descrizione deve essere di almeno 50 caratteri');
-    }
-
-    // Validazione campi required
-    Utils.qsa('[required]', form).forEach(field => {
-      if (!field.value.trim()) {
-        const label = field.previousElementSibling?.textContent || 
-                     field.getAttribute('placeholder') || 
-                     field.name || 
-                     'Campo obbligatorio';
-        errors.push(`${label.replace('*', '')} è obbligatorio`);
-      }
-    });
-
-    if (errors.length > 0) {
-      this.showFormErrors(form, errors);
-      return false;
-    }
-
-    return true;
-  }
-
-  showFormErrors(form, errors) {
-    let messageContainer = form.querySelector('.form-message');
-    
-    if (!messageContainer) {
-      messageContainer = document.createElement('div');
-      messageContainer.className = 'form-message';
-      form.appendChild(messageContainer);
-    }
-
-    messageContainer.className = 'form-message error';
-    messageContainer.style.display = 'block';
-    messageContainer.innerHTML = `
-      <h4>❌ Correggi questi errori:</h4>
-      <ul>
-        ${errors.map(error => `<li>${error}</li>`).join('')}
-      </ul>
-    `;
-
-    messageContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  resetForm(form) {
-    form.reset();
-    
-    // Rimuovi classi di validazione
-    Utils.qsa('.input-error, .input-success', form).forEach(field => {
-      field.classList.remove('input-error', 'input-success');
-    });
-
-    // Reset contatori caratteri
-    const counter = form.querySelector('#descrizione-counter');
-    if (counter) {
-      counter.textContent = '0/2000';
-      counter.style.color = '';
-    }
-
-    // Reset file lists
-    Utils.qsa('.file-list', form).forEach(list => {
-      list.innerHTML = '';
-    });
-  }
-}
-
-// ===== ACCESSIBILITY ENHANCEMENTS =====
-class AccessibilityEnhancements {
-  constructor() {
-    this.init();
-  }
-
-  init() {
-    this.setupKeyboardNavigation();
-    this.setupReducedMotion();
-    this.setupFocusManagement();
-  }
-
-  setupKeyboardNavigation() {
-    // Aggiunge supporto keyboard per elementi custom
-    Utils.qsa('[role="button"]:not(button)').forEach(element => {
-      element.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          element.click();
-        }
-      });
-    });
-  }
-
-  setupReducedMotion() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const style = document.createElement('style');
-      style.textContent = `
-        *, *::before, *::after {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }
-
-  setupFocusManagement() {
-    // Migliora la visibilità del focus
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab') {
-        document.body.classList.add('using-keyboard');
-      }
-    });
-
-    document.addEventListener('mousedown', () => {
-      document.body.classList.remove('using-keyboard');
-    });
-
-    // Aggiungi stili CSS per keyboard focus
-    const style = document.createElement('style');
-    style.textContent = `
-      .using-keyboard *:focus {
-        outline: 2px solid #0ea5e9 !important;
-        outline-offset: 2px !important;
-      }
-    `;
-    document.head.appendChild(style);
-  }
-}
-
-// ===== PERFORMANCE OPTIMIZATIONS =====
-class PerformanceOptimizations {
-  constructor() {
-    this.init();
-  }
-
-  init() {
-    this.setupLazyLoading();
-    this.setupTouchOptimizations();
-    this.setupIntersectionObserver();
-  }
-
-  setupLazyLoading() {
-    if ('IntersectionObserver' in window) {
-      const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            if (img.dataset.src) {
-              img.src = img.dataset.src;
-              img.classList.remove('lazy');
-              imageObserver.unobserve(img);
-            }
-          }
-        });
-      });
-
-      Utils.qsa('img[data-src]').forEach(img => {
-        img.classList.add('lazy');
-        imageObserver.observe(img);
-      });
-    }
-  }
-
-  setupTouchOptimizations() {
-    if ('ontouchstart' in window) {
-      // Previene double-tap zoom
-      let lastTouchEnd = 0;
-      document.addEventListener('touchend', (e) => {
-        const now = Date.now();
-        if (now - lastTouchEnd <= 300) {
-          e.preventDefault();
-        }
-        lastTouchEnd = now;
-      }, { passive: false });
-    }
-  }
-
-  setupIntersectionObserver() {
-    // Osserva elementi per analytics o altre funzioni
-    if ('IntersectionObserver' in window) {
-      const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Traccia visualizzazione sezione
-            const sectionName = entry.target.id || entry.target.className;
-            console.log(`Section viewed: ${sectionName}`);
-          }
-        });
-      }, { threshold: 0.5 });
-
-      Utils.qsa('section[id]').forEach(section => {
-        sectionObserver.observe(section);
-      });
-    }
-  }
-}
-
-// ===== SUCCESS/CANCEL PAGE HANDLER =====
-class PaymentResultHandler {
-  constructor() {
-    this.init();
-  }
-
-  init() {
-    // Gestisce le pagine di successo e cancellazione
-    if (window.location.pathname.includes('success.html')) {
-      this.handleSuccess();
-    } else if (window.location.pathname.includes('cancel.html')) {
-      this.handleCancel();
-    }
-  }
-
-  handleSuccess() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sessionId = urlParams.get('session_id');
-    
-    if (sessionId) {
-      console.log('🎉 Pagamento completato con successo:', sessionId);
-      
-      // Salva nel storage per tracciamento
-      Utils.storage.set('lastPaymentSession', sessionId);
-      Utils.storage.set('lastPaymentDate', new Date().toISOString());
-      
-      // Mostra notifica di successo
-      setTimeout(() => {
-        Utils.showToast('Pagamento completato con successo! 🎉', 'success', 5000);
-      }, 1000);
-      
-      // Analytics o tracking
-      this.trackPaymentSuccess(sessionId);
-    }
-  }
-
-  handleCancel() {
-    console.log('❌ Pagamento annullato dall\'utente');
-    
-    // Mostra messaggio informativo
-    setTimeout(() => {
-      Utils.showToast('Pagamento annullato. Puoi riprovare quando vuoi.', 'info', 4000);
-    }, 1000);
-    
-    // Eventualmente invia notifica al backend
-    this.notifyPaymentCancellation();
-  }
-
-  trackPaymentSuccess(sessionId) {
-    // Qui puoi aggiungere tracking analytics
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'purchase', {
-        transaction_id: sessionId,
-        currency: 'EUR'
-      });
-    }
-  }
-
-  async notifyPaymentCancellation() {
-    try {
-      // Recupera dati dalla sessione se disponibili
-      const lastSession = Utils.storage.get('tempSessionData');
-      
-      if (lastSession) {
-        const sessionData = JSON.parse(lastSession);
-        
-        await fetch(`${BACKEND_CONFIG.BASE_URL}${BACKEND_CONFIG.ENDPOINTS.cancel}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            sessionId: sessionData.sessionId,
-            email: sessionData.email,
-            nome: sessionData.nome
-          })
-        });
-        
-        // Pulisci storage
-        Utils.storage.set('tempSessionData', '');
-      }
-    } catch (error) {
-      console.warn('Errore notifica cancellazione:', error);
-    }
-  }
-}
-
-// ===== INIZIALIZZAZIONE PRINCIPALE =====
-class AvvocaApp {
-  constructor() {
-    this.components = [];
-    this.init();
-  }
-
-  async init() {
-    // Aspetta che il DOM sia pronto
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.initComponents());
-    } else {
-      this.initComponents();
-    }
-  }
-
-  initComponents() {
-    try {
-      // Inizializza tutti i componenti
-      this.components = [
-        new MobileMenu(),
-        new CookieBanner(),
-        new SmoothScroll(),
-        new ScrollAnimations(),
-        new ServiceCards(),
-        new FormEnhancements(), // Include PaymentManager
-        new PaymentResultHandler(),
-        new AccessibilityEnhancements(),
-        new PerformanceOptimizations()
-      ];
-
-      // Aggiungi stili per componenti
-      this.addDynamicStyles();
-
-      // Setup global error handler
-      this.setupErrorHandling();
-
-      console.log('✅ Avvocà App inizializzata correttamente');
-      console.log('💳 Backend configurato:', BACKEND_CONFIG.BASE_URL);
-      
-    } catch (error) {
-      console.error('❌ Errore nell\'inizializzazione:', error);
-      Utils.showToast('Errore nell\'inizializzazione dell\'app', 'error');
-    }
-  }
-
-  addDynamicStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-      /* Spinner per loading states */
-      .spinner {
-        width: 16px;
-        height: 16px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-top: 2px solid white;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin-left: 8px;
-        display: inline-block;
-      }
-      
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      /* Drag & Drop states */
-      .drag-over {
-        border-color: #0ea5e9 !important;
-        background-color: rgba(14, 165, 233, 0.05) !important;
-        transform: scale(1.02);
-        transition: all 0.2s ease;
-      }
-      
-      /* Form validation states */
-      .input-error {
-        border-color: #ef4444 !important;
-        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
-      }
-      
-      .input-success {
-        border-color: #10b981 !important;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
-      }
-      
-      /* Form messages */
-      .form-message {
-        margin: 1rem 0;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        display: none;
-      }
-      
-      .form-message.error {
-        background-color: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #dc2626;
-      }
-      
-      .form-message.success {
-        background-color: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #16a34a;
-      }
-      
-      .form-message h4 {
-        margin: 0 0 0.5rem 0;
-        font-weight: 600;
-      }
-      
-      .form-message ul {
-        margin: 0;
-        padding-left: 1.5rem;
-      }
-      
-      .form-message li {
-        margin: 0.25rem 0;
-      }
-      
-      /* File list styling */
-      .file-list {
-        list-style: none;
-        padding: 0;
-        margin: 0.5rem 0;
-      }
-      
-      .file-list li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.25rem;
-        margin: 0.25rem 0;
-      }
-      
-      .file-info {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-      }
-      
-      .file-name {
-        font-weight: 500;
-        color: #374151;
-      }
-      
-      .file-size {
-        font-size: 0.875rem;
-        color: #6b7280;
-      }
-      
-      .file-remove {
-        background: #ef4444;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-        font-size: 16px;
-        line-height: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .file-remove:hover {
-        background: #dc2626;
-      }
-      
-      /* Loading states */
-      .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-      }
-      
-      .loading-content {
-        background: white;
-        padding: 2rem;
-        border-radius: 1rem;
-        text-align: center;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      }
-      
-      /* Responsive adjustments */
-      @media (max-width: 768px) {
-        .form-message {
-          font-size: 0.875rem;
-        }
-        
-        .file-list li {
-          padding: 0.75rem 0.5rem;
-        }
-        
-        .file-info {
-          font-size: 0.875rem;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  setupErrorHandling() {
-    // Global error handler
-    window.addEventListener('error', (event) => {
-      console.error('Global error:', event.error);
-      Utils.showToast('Si è verificato un errore imprevisto', 'error');
-    });
-
-    // Promise rejection handler
-    window.addEventListener('unhandledrejection', (event) => {
-      console.error('Unhandled promise rejection:', event.reason);
-      event.preventDefault();
-    });
-
-    // Network errors
-    window.addEventListener('offline', () => {
-      Utils.showToast('Connessione internet persa', 'warning', 0);
-    });
-
-    window.addEventListener('online', () => {
-      Utils.showToast('Connessione internet ripristinata', 'success');
-    });
-  }
-
-  // Metodo per cleanup
-  destroy() {
-    this.components.forEach(component => {
-      if (component.destroy && typeof component.destroy === 'function') {
-        component.destroy();
-      }
-    });
-  }
-
-  // Debug helper
-  getStatus() {
-    return {
-      components: this.components.length,
-      backend: BACKEND_CONFIG.BASE_URL,
-      initialized: true,
-      timestamp: new Date().toISOString()
-    };
-  }
-}
-
-// ===== UTILITY FUNCTIONS GLOBALI =====
-// Funzioni helper esposte globalmente per debug e testing
-
-window.AvvocaDebug = {
-  testBackend: async () => {
-    const pm = new PaymentManager();
-    return await pm.testBackendConnection();
-  },
-  
-  showToast: (message, type) => {
-    Utils.showToast(message, type);
-  },
-  
-  getAppStatus: () => {
-    return window.avvocaApp ? window.avvocaApp.getStatus() : { error: 'App not initialized' };
-  },
-  
-  forcePaymentTest: async (mockData = {}) => {
-    const form = Utils.qs('#serviceForm');
-    if (!form) {
-      console.error('Form non trovato');
-      return;
-    }
-    
-    // Popola form con dati di test
-    const testData = {
-      nome: 'Test User',
-      email: 'test@example.com',
-      email2: 'test@example.com',
-      macroarea: 'Diritto Civile',
-      descrizione: 'Questa è una descrizione di test per verificare il funzionamento del sistema di pagamento. Deve essere di almeno 50 caratteri per passare la validazione.',
-      servizio: 'parere',
-      ...mockData
-    };
-    
-    Object.keys(testData).forEach(key => {
-      const field = form.querySelector(`[name="${key}"]`);
-      if (field) {
-        field.value = testData[key];
-      }
-    });
-    
-    console.log('🧪 Test pagamento con dati:', testData);
-    form.dispatchEvent(new Event('submit'));
   }
 };
 
-// ===== AVVIO APPLICAZIONE =====
-const avvocaApp = new AvvocaApp();
+// ===== FORM IMPROVEMENTS ===== //
 
-// Esponi app per debug
-window.avvocaApp = avvocaApp;
+const FormImprovements = {
+  init: () => {
+    // Auto-focus primo campo con errore
+    FormImprovements.setupErrorFocus();
+    
+    // Migliora UX dei select
+    FormImprovements.enhanceSelects();
+    
+    // Auto-save form data
+    FormImprovements.setupAutoSave();
+    
+    // Placeholder animation
+    FormImprovements.setupPlaceholderAnimations();
+  },
+  
+  setupErrorFocus: () => {
+    // Focus automatico su primo campo con errore
+    const firstError = document.querySelector('.field-error');
+    if (firstError) {
+      const field = firstError.closest('.form-group')?.querySelector('input, textarea, select');
+      if (field) {
+        setTimeout(() => field.focus(), 100);
+      }
+    }
+  },
+  
+  enhanceSelects: () => {
+    // Miglioramenti per i select
+    document.querySelectorAll('select').forEach(select => {
+      select.addEventListener('change', () => {
+        if (select.value) {
+          select.classList.add('has-value');
+        } else {
+          select.classList.remove('has-value');
+        }
+      });
+      
+      // Inizializza stato
+      if (select.value) {
+        select.classList.add('has-value');
+      }
+    });
+  },
+  
+  setupAutoSave: () => {
+    const form = document.getElementById('serviceForm');
+    if (!form) return;
+    
+    // Auto-save ogni 30 secondi
+    let autoSaveTimer;
+    
+    const saveFormData = () => {
+      try {
+        const formData = FormHandler.collectFormData(form);
+        const saveKey = `formData_${window.location.pathname}`;
+        sessionStorage.setItem(saveKey, JSON.stringify(formData));
+        Logger.info('Dati form salvati automaticamente');
+      } catch (error) {
+        Logger.error('Errore auto-save:', error);
+      }
+    };
+    
+    const restoreFormData = () => {
+      try {
+        const saveKey = `formData_${window.location.pathname}`;
+        const savedData = sessionStorage.getItem(saveKey);
+        
+        if (savedData) {
+          const formData = JSON.parse(savedData);
+          
+          Object.keys(formData).forEach(key => {
+            const field = form.querySelector(`[name="${key}"]`);
+            if (field && formData[key]) {
+              if (field.type === 'checkbox') {
+                field.checked = formData[key];
+              } else {
+                field.value = formData[key];
+                // Trigger change per select
+                if (field.tagName === 'SELECT') {
+                  field.dispatchEvent(new Event('change'));
+                }
+              }
+            }
+          });
+          
+          Logger.info('Dati form ripristinati');
+        }
+      } catch (error) {
+        Logger.error('Errore ripristino form:', error);
+      }
+    };
+    
+    // Ripristina al caricamento
+    restoreFormData();
+    
+    // Auto-save on input
+    form.addEventListener('input', () => {
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(saveFormData, 30000); // 30 secondi
+    });
+    
+    // Cancella dati salvati dopo invio
+    form.addEventListener('submit', () => {
+      const saveKey = `formData_${window.location.pathname}`;
+      sessionStorage.removeItem(saveKey);
+    });
+  },
+  
+  setupPlaceholderAnimations: () => {
+    // Animazioni per placeholder
+    document.querySelectorAll('input, textarea').forEach(field => {
+      field.addEventListener('focus', () => {
+        field.parentElement.classList.add('focused');
+      });
+      
+      field.addEventListener('blur', () => {
+        if (!field.value) {
+          field.parentElement.classList.remove('focused');
+        }
+      });
+      
+      // Inizializza stato
+      if (field.value) {
+        field.parentElement.classList.add('focused');
+      }
+    });
+  }
+};
 
-// Export per testing (se necessario)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { 
-    AvvocaApp, 
-    Utils, 
-    PaymentManager, 
-    FormEnhancements 
-  };
+// ===== ACCESSIBILITY IMPROVEMENTS ===== //
+
+const AccessibilityManager = {
+  init: () => {
+    AccessibilityManager.setupKeyboardNavigation();
+    AccessibilityManager.setupScreenReaderSupport();
+    AccessibilityManager.setupFocusManagement();
+    AccessibilityManager.setupAriaSupport();
+  },
+  
+  setupKeyboardNavigation: () => {
+    // Escape chiude menu mobile
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        MobileMenu.close();
+        
+        // Chiudi anche eventuali toast
+        const toasts = document.querySelectorAll('.toast');
+        toasts.forEach(toast => toast.remove());
+      }
+    });
+    
+    // Tab trap per menu mobile
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) {
+      navLinks.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab' && navLinks.classList.contains('active')) {
+          const focusableElements = navLinks.querySelectorAll('a, button');
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+          
+          if (e.shiftKey && document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          } else if (!e.shiftKey && document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      });
+    }
+    
+    // Enter su card servizi (se presenti nella homepage)
+    document.querySelectorAll('.servizio-card').forEach(card => {
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+    });
+  },
+  
+  setupScreenReaderSupport: () => {
+    // Annunci per screen reader
+    const announcer = document.createElement('div');
+    announcer.setAttribute('aria-live', 'polite');
+    announcer.setAttribute('aria-atomic', 'true');
+    announcer.className = 'sr-only';
+    announcer.id = 'announcer';
+    document.body.appendChild(announcer);
+    
+    window.announceToScreenReader = (message) => {
+      announcer.textContent = message;
+      setTimeout(() => announcer.textContent = '', 1000);
+    };
+    
+    // Annunci per cambio stato form
+    const form = document.getElementById('serviceForm');
+    if (form) {
+      form.addEventListener('submit', () => {
+        window.announceToScreenReader('Elaborazione pagamento in corso...');
+      });
+    }
+  },
+  
+  setupFocusManagement: () => {
+    // Skip links
+    const skipLinks = document.querySelectorAll('.skip-to-content');
+    skipLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.focus();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+    
+    // Focus management per toast
+    let lastFocusedElement = null;
+    
+    window.addEventListener('beforeunload', () => {
+      lastFocusedElement = document.activeElement;
+    });
+  },
+  
+  setupAriaSupport: () => {
+    // Aggiorna aria-expanded per hamburger
+    const hamburger = document.querySelector('.hamburger');
+    if (hamburger) {
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+    
+    // Aggiorna aria-invalid per campi con errori
+    document.addEventListener('input', (e) => {
+      if (e.target.classList.contains('error')) {
+        e.target.setAttribute('aria-invalid', 'true');
+      } else {
+        e.target.removeAttribute('aria-invalid');
+      }
+    });
+    
+    // Descrizioni aria per form
+    const form = document.getElementById('serviceForm');
+    if (form) {
+      const submitBtn = form.querySelector('.submit-btn');
+      if (submitBtn && !submitBtn.getAttribute('aria-describedby')) {
+        const helpText = form.querySelector('.form-submit .field-help');
+        if (helpText) {
+          const descId = 'submit-description';
+          helpText.id = descId;
+          submitBtn.setAttribute('aria-describedby', descId);
+        }
+      }
+    }
+  }
+};
+
+// ===== PERFORMANCE MONITORING ===== //
+
+const PerformanceMonitor = {
+  init: () => {
+    // Monitora performance di caricamento
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if ('performance' in window) {
+          const perfData = performance.getEntriesByType('navigation')[0];
+          if (perfData) {
+            const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
+            Logger.info(`Pagina caricata in ${Math.round(loadTime)}ms`);
+            
+            // Invia metriche se configurato
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'page_load_time', {
+                value: Math.round(loadTime),
+                event_category: 'Performance'
+              });
+            }
+          }
+        }
+      }, 0);
+    });
+    
+    // Monitora errori JavaScript
+    window.addEventListener('error', (e) => {
+      Logger.error('JavaScript Error:', {
+        message: e.message,
+        filename: e.filename,
+        lineno: e.lineno,
+        colno: e.colno
+      });
+      
+      // Invia a analytics se configurato
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'javascript_error', {
+          event_category: 'Error',
+          event_label: e.message,
+          value: 1
+        });
+      }
+    });
+    
+    // Monitora errori di rete
+    window.addEventListener('unhandledrejection', (e) => {
+      Logger.error('Unhandled Promise Rejection:', e.reason);
+    });
+  }
+};
+
+// ===== SERVICE CARD INTERACTIONS (per homepage) ===== //
+
+const ServiceCards = {
+  init: () => {
+    const serviceCards = document.querySelectorAll('.servizio-card');
+    
+    serviceCards.forEach(card => {
+      card.addEventListener('click', ServiceCards.handleCardClick);
+      card.addEventListener('keydown', ServiceCards.handleCardKeydown);
+    });
+  },
+  
+  handleCardClick(e) {
+    const card = e.currentTarget;
+    const cardTitle = card.querySelector('h3')?.textContent || '';
+    
+    let targetPage = '';
+    if (cardTitle.includes('Parere')) {
+      targetPage = 'pages/parere.html';
+    } else if (cardTitle.includes('Revisione')) {
+      targetPage = 'pages/revisione.html';
+    } else if (cardTitle.includes('Redazione')) {
+      targetPage = 'pages/redazione.html';
+    }
+    
+    if (targetPage) {
+      window.location.href = targetPage;
+    }
+  },
+  
+  handleCardKeydown(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.currentTarget.click();
+    }
+  }
+};
+
+// ===== UTILITY FUNCTIONS ===== //
+
+const Utils = {
+  // Debounce function
+  debounce: (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  },
+  
+  // Throttle function
+  throttle: (func, limit) => {
+    let inThrottle;
+    return function() {
+      const args = arguments;
+      const context = this;
+      if (!inThrottle) {
+        func.apply(context, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
+  },
+  
+  // Format currency
+  formatCurrency: (amount) => {
+    return new Intl.NumberFormat('it-IT', {
+      style: 'currency',
+      currency: 'EUR'
+    }).format(amount);
+  },
+  
+  // Detect mobile
+  isMobile: () => {
+    return window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  },
+  
+  // Get query params
+  getQueryParam: (name) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  },
+  
+  // Scroll to element
+  scrollToElement: (element, offset = 0) => {
+    if (typeof element === 'string') {
+      element = document.querySelector(element);
+    }
+    
+    if (element) {
+      const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+      const elementPosition = element.offsetTop - headerHeight - offset;
+      
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+  }
+};
+
+// ===== MAIN APPLICATION CLASS ===== //
+
+class AvvocaApp {
+  constructor() {
+    this.initialized = false;
+    this.isServicePage = this.detectServicePage();
+  }
+  
+  detectServicePage() {
+    return !!document.getElementById('serviceForm');
+  }
+  
+  async init() {
+    if (this.initialized) return;
+    
+    try {
+      Logger.info('🚀 Inizializzazione Avvocà App...');
+      
+      // Inizializzazioni sincrone base
+      MobileMenu.init();
+      CookieBanner.init();
+      SmoothScroll.init();
+      AccessibilityManager.init();
+      PerformanceMonitor.init();
+      
+      // Inizializzazioni per homepage
+      if (!this.isServicePage) {
+        ServiceCards.init();
+      }
+      
+      // Inizializzazioni per le pagine di servizio
+      if (this.isServicePage) {
+        FormHandler.init();
+        FormImprovements.init();
+        
+        // Inizializza componenti form
+        document.querySelectorAll('input[type="file"]').forEach(FileManager.init);
+        document.querySelectorAll('textarea[maxlength]').forEach(CharacterCounter.init);
+        
+        Logger.info('Componenti form inizializzati');
+      }
+      
+      // Animazioni solo se supportate
+      if ('IntersectionObserver' in window) {
+        AnimationManager.init();
+      }
+      
+      // Test connessione backend (solo per pagine servizio)
+      if (this.isServicePage) {
+        await this.testBackendConnection();
+      }
+      
+      // Setup event listeners globali
+      this.setupGlobalEventListeners();
+      
+      this.initialized = true;
+      Logger.success('✅ Avvocà App inizializzata correttamente');
+      
+      // Notifica pronta per screen reader
+      if (window.announceToScreenReader) {
+        window.announceToScreenReader('Applicazione caricata');
+      }
+      
+    } catch (error) {
+      Logger.error('❌ Errore durante l\'inizializzazione:', error);
+    }
+  }
+  
+  async testBackendConnection() {
+    try {
+      const response = await fetch(`${CONFIG.backend.baseUrl}${CONFIG.backend.endpoints.health}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        Logger.success('Backend connesso:', data.status);
+      } else {
+        throw new Error(`HTTP ${response.status}`);
+      }
+    } catch (error) {
+      Logger.warning('Backend non raggiungibile:', error.message);
+      // Non bloccare l'app se il backend non è raggiungibile
+    }
+  }
+  
+  setupGlobalEventListeners() {
+    // Resize handler con throttle
+    window.addEventListener('resize', Utils.throttle(() => {
+      // Chiudi menu mobile su resize
+      if (window.innerWidth > 768) {
+        MobileMenu.close();
+      }
+      
+      // Aggiorna layout se necessario
+      this.handleResize();
+    }, 250));
+    
+    // Scroll handler per effetti
+    window.addEventListener('scroll', Utils.throttle(() => {
+      this.handleScroll();
+    }, 100));
+    
+    // Beforeunload per cleanup
+    window.addEventListener('beforeunload', () => {
+      this.cleanup();
+    });
+    
+    // Online/offline detection
+    window.addEventListener('online', () => {
+      Toast.show('Connessione ripristinata', 'success', 3000);
+    });
+    
+    window.addEventListener('offline', () => {
+      Toast.show('Connessione persa. Controlla la tua rete.', 'warning', 5000);
+    });
+  }
+  
+  handleResize() {
+    // Aggiorna dimensioni elementi se necessario
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  
+  handleScroll() {
+    // Effetti scroll se necessari
+    const scrollY = window.scrollY;
+    
+    // Header shadow on scroll
+    const header = document.querySelector('header');
+    if (header) {
+      if (scrollY > 10) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+  }
+  
+  cleanup() {
+    // Cleanup necessario prima dell'unload
+    Logger.info('Cleanup applicazione...');
+    
+    // Ferma timer attivi
+    if (this.autoSaveTimer) {
+      clearTimeout(this.autoSaveTimer);
+    }
+    
+    // Rimuovi event listeners globali se necessario
+    // (Gli event listeners si puliscono automaticamente)
+  }
+  
+  // Metodi pubblici per interazione esterna
+  showNotification(message, type = 'info') {
+    Toast.show(message, type);
+  }
+  
+  validateCurrentForm() {
+    const form = document.getElementById('serviceForm');
+    if (form) {
+      return FormValidator.validateForm(form);
+    }
+    return true;
+  }
+  
+  getFormData() {
+    const form = document.getElementById('serviceForm');
+    if (form) {
+      return FormHandler.collectFormData(form);
+    }
+    return {};
+  }
 }
 
-// Log di inizializzazione
-console.log(`
-🏛️ AVVOCÀ - Sistema Inizializzato
-📧 Backend: ${BACKEND_CONFIG.BASE_URL}
-🔧 Debug: window.AvvocaDebug
-📱 App: window.avvocaApp
-`);
+// ===== GLOBAL ERROR HANDLER ===== //
 
-// Test rapido backend all'avvio (solo in development)
-if (window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1')) {
-  setTimeout(() => {
-    window.AvvocaDebug.testBackend().then(connected => {
-      console.log(connected ? '✅ Backend test: OK' : '❌ Backend test: FAILED');
+window.addEventListener('error', (e) => {
+  Logger.error('Global Error:', e.error);
+  
+  // Mostra errore user-friendly solo se non è un errore di rete
+  if (!e.error?.message?.includes('fetch')) {
+    Toast.show('Si è verificato un errore. Ricarica la pagina se il problema persiste.', 'error');
+  }
+});
+
+// ===== AUTO-INITIALIZATION ===== //
+
+// Inizializza quando il DOM è pronto
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    const app = new AvvocaApp();
+    app.init().catch(error => {
+      Logger.error('Errore inizializzazione app:', error);
     });
-  }, 2000);
+    
+    // Rendi disponibile globalmente per debug
+    window.AvvocaApp = app;
+  });
+} else {
+  // DOM già caricato
+  const app = new AvvocaApp();
+  app.init().catch(error => {
+    Logger.error('Errore inizializzazione app:', error);
+  });
+  
+  // Rendi disponibile globalmente per debug
+  window.AvvocaApp = app;
+}
+
+// ===== EXPOSE GLOBAL UTILITIES ===== //
+
+// Esporta utilities per uso globale se necessario
+window.AvvocaUtils = {
+  Toast,
+  Logger,
+  FormValidator,
+  LoadingManager,
+  CookieManager,
+  Utils,
+  PaymentManager
+};
+
+// ===== DEVELOPMENT HELPERS ===== //
+
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  // Helper per development
+  window.dev = {
+    testToast: (type = 'info') => Toast.show(`Test notification ${type}`, type),
+    testValidation: () => {
+      const form = document.getElementById('serviceForm');
+      if (form) return FormValidator.validateForm(form);
+      return 'No form found';
+    },
+    testPayment: () => {
+      const form = document.getElementById('serviceForm');
+      if (form) {
+        const formData = FormHandler.collectFormData(form);
+        Logger.info('Form data:', formData);
+        return formData;
+      }
+      return 'No form found';
+    },
+    showLoadingManager: () => LoadingManager.show('Test loading...'),
+    hideLoadingManager: () => LoadingManager.hide(),
+    config: CONFIG
+  };
+  
+  Logger.info('🛠️ Development helpers available in window.dev');
 }

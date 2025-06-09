@@ -1,277 +1,376 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" prefix="og: http://ogp.me/ns#">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redazione Contratti - Avvocà</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redazione Contratti Online - Avvocà</title>
+  <meta name="description" content="Redazione professionale di contratti su misura. Documenti legali personalizzati creati da avvocati esperti in 24-48 ore. €60 per la massima protezione.">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="preload" href="../css/style.css" as="style">
+  <link rel="stylesheet" href="../css/style.css">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Redazione Contratti Online - Avvocà">
+  <meta property="og:description" content="Contratti su misura redatti da esperti. Documenti legali personalizzati per le tue esigenze specifiche.">
+  <meta property="og:url" content="https://avvoca.net/pages/redazione.html">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà" class="logo-img">
-                    <span class="logo-text">Avvocà</span>
-                </div>
-                
-                <nav class="nav-links">
-                    <a href="../index.html" class="nav-link">Home</a>
-                    <a href="../index.html#servizi" class="nav-link">Servizi</a>
-                    <a href="../index.html#contatti" class="nav-link">Contatti</a>
-                </nav>
-                
-                <button class="hamburger" aria-label="Menu" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-        <div class="mobile-overlay"></div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Back Button -->
-        <div class="container">
-            <a href="../index.html#servizi" class="back-link">
-                ← Torna ai servizi
-            </a>
-        </div>
-
-        <!-- Service Header -->
-        <section class="service-header">
-            <div class="container">
-                <div class="service-header-content">
-                    <h1>Redazione Contratti</h1>
-                    <p class="service-description">
-                        Ottieni un contratto su misura redatto da avvocati esperti. Creiamo documenti 
-                        legali personalizzati che proteggono i tuoi interessi e rispettano la normativa vigente.
-                    </p>
-                    <div class="service-features">
-                        <div class="feature">
-                            <span class="feature-icon">✍️</span>
-                            <span>Redazione personalizzata</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">🛡️</span>
-                            <span>Tutela legale completa</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">📋</span>
-                            <span>Conforme alle normative</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Service Form -->
-        <section class="service-form-section">
-            <div class="container">
-                <div class="form-container">
-                    <div class="form-header">
-                        <h2>Richiedi Redazione Contratto</h2>
-                        <p>Fornisci tutti i dettagli necessari per creare il tuo contratto personalizzato</p>
-                    </div>
-
-                    <form id="serviceForm" class="service-form" novalidate>
-                        <!-- Dati Personali -->
-                        <div class="form-section">
-                            <h3>Dati Personali</h3>
-                            
-                            <div class="form-group">
-                                <label for="nome">Nome e Cognome *</label>
-                                <input type="text" id="nome" name="nome" required 
-                                       placeholder="Inserisci il tuo nome completo">
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="email">Email *</label>
-                                    <input type="email" id="email" name="email" required 
-                                           placeholder="tua@email.com">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email2">Conferma Email *</label>
-                                    <input type="email" id="email2" name="email2" required 
-                                           placeholder="Conferma la tua email">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="telefono">Telefono (opzionale)</label>
-                                <input type="tel" id="telefono" name="telefono" 
-                                       placeholder="+39 123 456 7890">
-                            </div>
-                        </div>
-
-                        <!-- Dettagli Contratto -->
-                        <div class="form-section">
-                            <h3>Dettagli del Contratto da Redigere</h3>
-                            
-                            <div class="form-group">
-                                <label for="tipo_contratto">Tipo di Contratto *</label>
-                                <select name="tipo_contratto" id="tipo_contratto" required>
-                                    <option value="">Seleziona il tipo di contratto</option>
-                                    <option value="lavoro_dipendente">Contratto di Lavoro Dipendente</option>
-                                    <option value="lavoro_autonomo">Contratto di Lavoro Autonomo</option>
-                                    <option value="consulenza">Contratto di Consulenza</option>
-                                    <option value="prestazione_occasionale">Contratto di Prestazione Occasionale</option>
-                                    <option value="affitto_immobile">Contratto di Affitto Immobile</option>
-                                    <option value="comodato">Contratto di Comodato</option>
-                                    <option value="vendita_beni">Contratto di Vendita Beni</option>
-                                    <option value="fornitura">Contratto di Fornitura</option>
-                                    <option value="servizi">Contratto di Servizi</option>
-                                    <option value="appalto">Contratto di Appalto</option>
-                                    <option value="subappalto">Contratto di Subappalto</option>
-                                    <option value="franchising">Contratto di Franchising</option>
-                                    <option value="distribuzione">Contratto di Distribuzione</option>
-                                    <option value="agenzia">Contratto di Agenzia</option>
-                                    <option value="mediazione">Contratto di Mediazione</option>
-                                    <option value="licenza_software">Contratto di Licenza Software</option>
-                                    <option value="licenza_marchio">Contratto di Licenza Marchio</option>
-                                    <option value="partnership">Contratto di Partnership</option>
-                                    <option value="joint_venture">Joint Venture</option>
-                                    <option value="riservatezza_nda">Accordo di Riservatezza (NDA)</option>
-                                    <option value="privacy_gdpr">Contratto Privacy/GDPR</option>
-                                    <option value="altro">Altro tipo di contratto</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="soggetti">Soggetti Coinvolti *</label>
-                                <textarea id="soggetti" name="soggetti" required 
-                                         placeholder="Descrivi i soggetti che saranno parte del contratto (es. nomi, ragioni sociali, ruoli, se sono persone fisiche o giuridiche, etc.)"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="oggetto">Oggetto del Contratto *</label>
-                                <textarea id="oggetto" name="oggetto" required 
-                                         placeholder="Descrivi chiaramente l'oggetto del contratto: cosa deve essere fornito/fatto, quali servizi/beni sono coinvolti, obiettivi specifici, etc."></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="condizioni_economiche">Condizioni Economiche</label>
-                                <textarea id="condizioni_economiche" name="condizioni_economiche" 
-                                         placeholder="Specifica compensi, modalità di pagamento, tempistiche, penali, clausole economiche particolari, etc. (opzionale ma consigliato)"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="descrizione">Descrizione Dettagliata e Richieste Specifiche *</label>
-                                <textarea id="descrizione" name="descrizione" required 
-                                         minlength="50" maxlength="3000"
-                                         placeholder="Fornisci tutti i dettagli aggiuntivi: durata del contratto, clausole particolari che vorresti includere, aspetti specifici da regolamentare, riferimenti normativi particolari, condizioni speciali, clausole di recesso, garanzie richieste, e qualsiasi altra informazione che possa aiutarci a redigere un contratto perfetto per le tue esigenze."></textarea>
-                                <div class="char-counter">
-                                    <span id="descrizione-counter">0/3000</span>
-                                </div>
-                                <small>Minimo 50 caratteri richiesti</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="urgenza">Urgenza</label>
-                                <select name="urgenza" id="urgenza">
-                                    <option value="normale">Normale (48-72 ore) - €60</option>
-                                    <option value="rapida">Rapida (24 ore) - €75</option>
-                                    <option value="urgente">Urgente (12 ore) - €90</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- File Upload -->
-                        <div class="form-section">
-                            <h3>Documenti di Riferimento</h3>
-                            <div class="form-group">
-                                <label for="documenti">Allegati (opzionale)</label>
-                                <div class="file-upload-area">
-                                    <input type="file" id="documenti" name="documenti" 
-                                           multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt">
-                                    <div class="file-upload-text">
-                                        <span>📎 Trascina i documenti qui o clicca per selezionare</span>
-                                        <small>Carica eventuali documenti di riferimento, bozze esistenti, documenti identitari, visure camerali, etc. Formati supportati: PDF, DOC, DOCX, JPG, PNG, TXT (max 10MB per file, max 10 file)</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Privacy -->
-                        <div class="form-section">
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="privacy" required>
-                                    <span class="checkmark"></span>
-                                    Accetto la <a href="#" target="_blank">Privacy Policy</a> e autorizzo il trattamento dei dati personali *
-                                </label>
-                            </div>
-                            
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="marketing">
-                                    <span class="checkmark"></span>
-                                    Accetto di ricevere comunicazioni commerciali (opzionale)
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Submit -->
-                        <div class="form-submit">
-                            <button type="submit" class="submit-btn">
-                                Procedi al Pagamento
-                            </button>
-                            <p class="form-note">
-                                Sarai reindirizzato a Stripe per completare il pagamento in modo sicuro.
-                                Riceverai il contratto redatto entro i tempi indicati.
-                            </p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà">
-                        <span>Avvocà</span>
-                    </div>
-                    <p>Consulenza legale professionale online</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Contatti</h4>
-                    <p>Email: avvocatopasqualegranata@gmail.com</p>
-                    <p>P.IVA: IT04770330613</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Servizi</h4>
-                    <p>Parere Legale</p>
-                    <p>Revisione Contratti</p>
-                    <p>Redazione Contratti</p>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Avvocà. Tutti i diritti riservati.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Cookie Banner -->
-    <div class="cookie-banner" style="display: none;">
-        <div class="cookie-content">
-            <p>Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti il loro utilizzo.</p>
-            <button id="accept-cookies" class="cookie-btn">Accetta</button>
-        </div>
+  <!-- Cookie Banner -->
+  <div class="cookie-banner" style="display: none;">
+    <div class="cookie-content">
+      <p>Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti il loro utilizzo.</p>
+      <button id="accept-cookies" class="cookie-btn">Accetta</button>
     </div>
+  </div>
 
-    <script src="../js/script.js"></script>
+  <!-- Header -->
+  <header role="banner">
+    <div class="container">
+      <nav role="navigation" aria-label="Navigazione principale">
+        <a href="../index.html" class="logo" aria-label="Avvocà - Torna alla homepage">
+          <div class="logo-img">
+            <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà" width="50" height="50">
+          </div>
+          <span class="logo-text">Avvocà</span>
+        </a>
+        
+        <button class="hamburger" 
+                type="button"
+                aria-label="Menu di navigazione" 
+                aria-expanded="false"
+                aria-controls="mobile-navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        <ul class="nav-links" id="mobile-navigation">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#servizi">Servizi</a></li>
+          <li><a href="../index.html#contatti" class="nav-cta">Contatti</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="mobile-overlay"></div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <section class="breadcrumb">
+    <div class="container">
+      <ul class="breadcrumb-list">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#servizi">Servizi</a></li>
+        <li>Redazione Contratti</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="service-page">
+    <!-- Service Hero -->
+    <section class="service-hero">
+      <div class="container">
+        <div class="service-icon">✒️</div>
+        <h1>Redazione Contratti</h1>
+        <p class="service-subtitle">
+          Ottieni un contratto su misura redatto da avvocati esperti. Creiamo documenti 
+          legali personalizzati che proteggono i tuoi interessi e rispettano la normativa vigente.
+        </p>
+        <div class="service-highlights">
+          <div class="highlight-item">
+            <span class="highlight-icon">✍️</span>
+            <span>Redazione personalizzata</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🛡️</span>
+            <span>Tutela legale completa</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">📋</span>
+            <span>Conforme alle normative</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🎯</span>
+            <span>Su misura per te</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Steps -->
+    <section>
+      <div class="container">
+        <h2>Come funziona la redazione</h2>
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="step-number">1</div>
+            <h3>Fornisci i dettagli</h3>
+            <p>Descrivici le tue esigenze specifiche e gli obiettivi del contratto da creare.</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">2</div>
+            <h3>Redazione professionale</h3>
+            <p>I nostri avvocati creano un contratto su misura per le tue necessità specifiche.</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">3</div>
+            <h3>Contratto personalizzato</h3>
+            <p>Ricevi un documento legale completo, conforme alla normativa e pronto all'uso.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section>
+      <div class="container">
+        <div class="service-form">
+          <div class="form-description">
+            <h2>Richiedi Redazione del tuo Contratto</h2>
+            <p>Fornisci tutti i dettagli necessari per creare il tuo contratto personalizzato che tuteli al meglio i tuoi interessi.</p>
+          </div>
+
+          <div class="form-instructions">
+            ✒️ <strong>Redazione su misura:</strong> Creiamo un contratto completamente personalizzato basato sulle tue esigenze specifiche.
+          </div>
+
+          <form id="serviceForm" class="contact-form" novalidate>
+            <!-- Dati Personali -->
+            <fieldset class="required-fieldset">
+              <legend>👤 Dati Personali</legend>
+              
+              <div class="form-group">
+                <label for="nome">Nome e Cognome *</label>
+                <input type="text" id="nome" name="nome" required 
+                       placeholder="Il tuo nome completo">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email *</label>
+                  <input type="email" id="email" name="email" required 
+                         placeholder="tua@email.com">
+                </div>
+                <div class="form-group">
+                  <label for="email2">Conferma Email *</label>
+                  <input type="email" id="email2" name="email2" required 
+                         placeholder="Conferma la tua email">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="telefono">Telefono (opzionale)</label>
+                <input type="tel" id="telefono" name="telefono" 
+                       placeholder="+39 123 456 7890">
+                <div class="field-help">Per eventuali chiarimenti durante la redazione</div>
+              </div>
+            </fieldset>
+
+            <!-- Dettagli Contratto da Redigere -->
+            <fieldset class="required-fieldset">
+              <legend>📄 Dettagli del Contratto da Redigere</legend>
+              
+              <div class="form-group">
+                <label for="tipo_contratto">Tipo di Contratto *</label>
+                <select name="tipo_contratto" id="tipo_contratto" required>
+                  <option value="">Seleziona il tipo di contratto da redigere</option>
+                  <option value="lavoro_dipendente">Contratto di Lavoro Dipendente</option>
+                  <option value="lavoro_autonomo">Contratto di Lavoro Autonomo</option>
+                  <option value="consulenza">Contratto di Consulenza</option>
+                  <option value="prestazione_occasionale">Contratto di Prestazione Occasionale</option>
+                  <option value="affitto_immobile">Contratto di Affitto/Locazione Immobile</option>
+                  <option value="comodato">Contratto di Comodato</option>
+                  <option value="vendita_beni">Contratto di Vendita Beni</option>
+                  <option value="fornitura">Contratto di Fornitura</option>
+                  <option value="servizi">Contratto di Servizi</option>
+                  <option value="appalto">Contratto di Appalto</option>
+                  <option value="subappalto">Contratto di Subappalto</option>
+                  <option value="franchising">Contratto di Franchising</option>
+                  <option value="distribuzione">Contratto di Distribuzione</option>
+                  <option value="agenzia">Contratto di Agenzia</option>
+                  <option value="mediazione">Contratto di Mediazione</option>
+                  <option value="licenza_software">Contratto di Licenza Software</option>
+                  <option value="licenza_marchio">Contratto di Licenza Marchio</option>
+                  <option value="partnership">Contratto di Partnership</option>
+                  <option value="joint_venture">Joint Venture</option>
+                  <option value="riservatezza_nda">Accordo di Riservatezza (NDA)</option>
+                  <option value="privacy_gdpr">Contratto Privacy/GDPR</option>
+                  <option value="altro">Altro tipo di contratto</option>
+                </select>
+                <div class="field-help">Scegli il tipo che meglio descrive il contratto che vuoi far redigere</div>
+              </div>
+
+              <div class="form-group">
+                <label for="soggetti">Soggetti Coinvolti *</label>
+                <textarea id="soggetti" name="soggetti" required 
+                         minlength="20" maxlength="1000"
+                         placeholder="Descrivi i soggetti che saranno parte del contratto:&#10;• Nomi/ragioni sociali&#10;• Ruoli specifici&#10;• Se sono persone fisiche o giuridiche&#10;• Eventuali rappresentanti legali&#10;&#10;Esempio: Mario Rossi (persona fisica) e ABC S.r.l. (società con sede in...)"></textarea>
+                <div class="char-count">
+                  <span id="soggetti-counter">0/1000</span>
+                </div>
+                <div class="field-help">Indica chiaramente chi sono le parti contrattuali</div>
+              </div>
+
+              <div class="form-group">
+                <label for="oggetto">Oggetto del Contratto *</label>
+                <textarea id="oggetto" name="oggetto" required 
+                         minlength="30" maxlength="1500"
+                         placeholder="Descrivi chiaramente l'oggetto del contratto:&#10;• Cosa deve essere fornito/fatto&#10;• Quali servizi/beni sono coinvolti&#10;• Obiettivi specifici&#10;• Caratteristiche tecniche&#10;• Modalità di esecuzione&#10;&#10;Sii il più specifico possibile per un contratto su misura."></textarea>
+                <div class="char-count">
+                  <span id="oggetto-counter">0/1500</span>
+                </div>
+                <div class="field-help">L'oggetto è il cuore del contratto, descrivilo con precisione</div>
+              </div>
+
+              <div class="form-group">
+                <label for="condizioni_economiche">Condizioni Economiche</label>
+                <textarea id="condizioni_economiche" name="condizioni_economiche" 
+                         maxlength="1000"
+                         placeholder="Specifica aspetti economici del contratto:&#10;• Compensi/prezzi&#10;• Modalità di pagamento&#10;• Tempistiche&#10;• Penali&#10;• Clausole economiche particolari&#10;• IVA e tassazione&#10;&#10;(Opzionale ma consigliato per contratti commerciali)"></textarea>
+                <div class="char-count">
+                  <span id="condizioni_economiche-counter">0/1000</span>
+                </div>
+                <div class="field-help">Aiutaci a includere le condizioni economiche corrette</div>
+              </div>
+
+              <div class="form-group">
+                <label for="descrizione">Descrizione Dettagliata e Richieste Specifiche *</label>
+                <textarea id="descrizione" name="descrizione" required 
+                         minlength="100" maxlength="3000"
+                         placeholder="Fornisci tutti i dettagli per un contratto perfetto:&#10;&#10;🕐 DURATA E TEMPI:&#10;• Durata del contratto&#10;• Date di inizio/fine&#10;• Scadenze importanti&#10;&#10;📋 CLAUSOLE SPECIFICHE:&#10;• Clausole particolari da includere&#10;• Condizioni di recesso&#10;• Garanzie richieste&#10;• Responsabilità delle parti&#10;&#10;⚖️ ASPETTI LEGALI:&#10;• Normativa di riferimento&#10;• Foro competente&#10;• Legge applicabile&#10;&#10;🎯 OBIETTIVI:&#10;• Cosa vuoi ottenere con questo contratto&#10;• Rischi che vuoi evitare&#10;• Protezioni specifiche necessarie&#10;&#10;Più dettagli fornisci, più il contratto sarà su misura per te!"></textarea>
+                <div class="char-count">
+                  <span id="descrizione-counter">0/3000</span>
+                </div>
+                <div class="field-help">Minimo 100 caratteri. Includi tutti i dettagli per un contratto su misura</div>
+              </div>
+
+              <div class="form-group">
+                <label for="urgenza">Livello di Urgenza</label>
+                <select name="urgenza" id="urgenza">
+                  <option value="normale">⏰ Normale (48-72 ore) - €60</option>
+                  <option value="rapida">🚀 Rapida (24 ore) - €75 (+€15)</option>
+                  <option value="urgente">⚡ Urgente (12 ore) - €90 (+€30)</option>
+                </select>
+                <div class="field-help">La redazione di contratti richiede tempo per garantire qualità e precisione</div>
+              </div>
+            </fieldset>
+
+            <!-- File Upload -->
+            <fieldset>
+              <legend>📎 Documenti di Riferimento (Opzionale)</legend>
+              <div class="file-group">
+                <label for="documenti">Allegati e Documenti di Riferimento</label>
+                <div class="file-drop-zone">
+                  <input type="file" id="documenti" name="documenti" 
+                         multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt">
+                  <div class="file-drop-icon">📁</div>
+                  <div><strong>Trascina i documenti qui</strong> o clicca per selezionare</div>
+                  <div class="file-drop-text">PDF, DOC, DOCX, JPG, PNG, TXT • Max 10MB per file • Max 10 file</div>
+                </div>
+                <div class="field-help">
+                  Carica documenti utili come: bozze esistenti, contratti di riferimento, documenti identitari, 
+                  visure camerali, specifiche tecniche, o qualsiasi altro materiale che possa aiutarci.
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Privacy -->
+            <fieldset class="required-fieldset">
+              <legend>🔒 Privacy e Consensi</legend>
+              
+              <div class="checkbox-group">
+                <input type="checkbox" id="privacy" name="privacy" required>
+                <label for="privacy">
+                  Accetto la <a href="../pages/privacy.html" target="_blank">Privacy Policy</a> e autorizzo il trattamento dei dati personali per la redazione del contratto richiesto *
+                </label>
+              </div>
+              
+              <div class="checkbox-group">
+                <input type="checkbox" id="marketing" name="marketing">
+                <label for="marketing">
+                  Accetto di ricevere comunicazioni commerciali sui servizi legali (opzionale)
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Submit -->
+            <div class="form-submit">
+              <button type="submit" class="submit-btn">
+                <span class="submit-icon">✒️</span>
+                Procedi al Pagamento Sicuro
+              </button>
+              <p class="field-help">
+                Pagamento sicuro tramite Stripe. Riceverai il contratto redatto su misura, 
+                completo e conforme alla normativa, entro i tempi indicati.
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service Details -->
+    <section class="service-details">
+      <div class="container">
+        <h2>Cosa Include la Redazione</h2>
+        <div class="details-grid">
+          <div class="detail-item">
+            <h3>✍️ Redazione Personalizzata</h3>
+            <p>Contratto scritto completamente su misura per le tue esigenze specifiche e obiettivi.</p>
+          </div>
+          <div class="detail-item">
+            <h3>📋 Conforme alle Normative</h3>
+            <p>Documento legale che rispetta tutte le leggi vigenti e la giurisprudenza più recente.</p>
+          </div>
+          <div class="detail-item">
+            <h3>🛡️ Tutela Completa</h3>
+            <p>Clausole progettate per proteggere al massimo i tuoi interessi e minimizzare i rischi.</p>
+          </div>
+          <div class="detail-item">
+            <h3>🎯 Obiettivi Centrati</h3>
+            <p>Contratto strutturato per raggiungere esattamente gli obiettivi che ci hai indicato.</p>
+          </div>
+          <div class="detail-item">
+            <h3>📄 Documento Completo</h3>
+            <p>Contratto pronto all'uso con tutte le clausole necessarie e linguaggio chiaro.</p>
+          </div>
+          <div class="detail-item">
+            <h3>🔄 Revisioni Incluse</h3>
+            <p>Una revisione gratuita entro 15 giorni per perfezionare il documento se necessario.</p>
+          </div>
+        </div>
+        
+        <div class="service-guarantee">
+          <h3>🛡️ Garanzia di Qualità</h3>
+          <p>Tutti i nostri contratti sono redatti da avvocati specializzati nel settore specifico. Il documento sarà completo, legalmente valido e ottimizzato per le tue esigenze. Se non sei soddisfatto, ti rimborsiamo integralmente.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <nav class="footer-links">
+          <a href="../pages/privacy.html">Privacy Policy</a>
+          <a href="../pages/termini.html">Termini di Servizio</a>
+          <a href="../pages/cookies.html">Cookie Policy</a>
+        </nav>
+        
+        <div class="copyright">
+          <p>
+            © 2025 Avvocà – Avv. Pasquale Granata • 
+            <a href="mailto:avvocatopasqualegranata@gmail.com">avvocatopasqualegranata@gmail.com</a><br>
+            <small>P.IVA: IT04770330613 - Iscritto all'Ordine Avvocati di Napoli Nord</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/script.js" defer></script>
 </body>
 </html>
