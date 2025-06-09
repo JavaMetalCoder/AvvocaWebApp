@@ -1,490 +1,275 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" prefix="og: http://ogp.me/ns#">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisione Contratti - Avvocà</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revisione Contratti Online - Avvocà</title>
+  <meta name="description" content="Revisione professionale di contratti online. Analisi clausole e suggerimenti migliorativi in 24-48 ore. €30 per proteggere i tuoi interessi.">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="preload" href="../css/style.css" as="style">
+  <link rel="stylesheet" href="../css/style.css">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Revisione Contratti Online - Avvocà">
+  <meta property="og:description" content="Fai revisionare il tuo contratto da esperti. Analisi clausole e suggerimenti in 24-48 ore.">
+  <meta property="og:url" content="https://avvoca.net/pages/revisione.html">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà" class="logo-img">
-                    <span class="logo-text">Avvocà</span>
-                </div>
-                
-                <nav class="nav-links">
-                    <a href="../index.html" class="nav-link">Home</a>
-                    <a href="../index.html#servizi" class="nav-link">Servizi</a>
-                    <a href="../index.html#contatti" class="nav-link">Contatti</a>
-                </nav>
-                
-                <button class="hamburger" aria-label="Menu" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-        <div class="mobile-overlay"></div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Back Button -->
-        <div class="container">
-            <a href="../index.html#servizi" class="back-link">
-                ← Torna ai servizi
-            </a>
-        </div>
-
-        <!-- Service Header -->
-        <section class="service-header">
-            <div class="container">
-                <div class="service-header-content">
-                    <h1>Revisione Contratti</h1>
-                    <p class="service-description">
-                        Fai revisionare il tuo contratto da un esperto. I nostri avvocati analizzeranno 
-                        ogni clausola e ti forniranno suggerimenti per proteggere i tuoi interessi.
-                    </p>
-                    <div class="service-features">
-                        <div class="feature">
-                            <span class="feature-icon">🔍</span>
-                            <span>Analisi dettagliata clausole</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">⚠️</span>
-                            <span>Identificazione criticità</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">💡</span>
-                            <span>Suggerimenti migliorativi</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Service Form -->
-        <section class="service-form-section">
-            <div class="container">
-                <div class="form-container">
-                    <div class="form-header">
-                        <h2>Richiedi Revisione Contratto</h2>
-                        <p>Invia il tuo contratto e ricevi un'analisi professionale completa</p>
-                    </div>
-
-                    <form id="serviceForm" class="service-form" novalidate>
-                        <!-- Dati Personali -->
-                        <div class="form-section">
-                            <h3>Dati Personali</h3>
-                            
-                            <div class="form-group">
-                                <label for="nome">Nome e Cognome *</label>
-                                <input type="text" id="nome" name="nome" required 
-                                       placeholder="Inserisci il tuo nome completo">
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="email">Email *</label>
-                                    <input type="email" id="email" name="email" required 
-                                           placeholder="tua@email.com">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email2">Conferma Email *</label>
-                                    <input type="email" id="email2" name="email2" required 
-                                           placeholder="Conferma la tua email">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="telefono">Telefono (opzionale)</label>
-                                <input type="tel" id="telefono" name="telefono" 
-                                       placeholder="+39 123 456 7890">
-                            </div>
-                        </div>
-
-                        <!-- Dettagli Contratto -->
-                        <div class="form-section">
-                            <h3>Dettagli del Contratto</h3>
-                            
-                            <div class="form-group">
-                                <label for="macroarea">Tipo di Contratto *</label>
-                                <select name="macroarea" id="macroarea" required>
-                                    <option value="">Seleziona il tipo di contratto</option>
-                                    <option value="lavoro">Contratto di Lavoro</option>
-                                    <option value="affitto">Contratto di Affitto</option>
-                                    <option value="vendita">Contratto di Vendita</option>
-                                    <option value="fornitura">Contratto di Fornitura</option>
-                                    <option value="servizi">Contratto di Servizi</option>
-                                    <option value="prestazione">Contratto di Prestazione</option>
-                                    <option value="societario">Contratto Societario</option>
-                                    <option value="franchising">Contratto di Franchising</option>
-                                    <option value="distribuzione">Contratto di Distribuzione</option>
-                                    <option value="licenza">Contratto di Licenza</option>
-                                    <option value="altro">Altro tipo di contratto</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="descrizione">Descrizione e Obiettivi della Revisione *</label>
-                                <textarea id="descrizione" name="descrizione" required 
-                                         minlength="50" maxlength="2000"
-                                         placeholder="Descrivi il contratto che vuoi far revisionare, i tuoi dubbi o preoccupazioni specifiche, gli aspetti su cui vorresti maggiore attenzione, e qualsiasi informazione che possa aiutarci a fornirti una revisione più mirata ed efficace."></textarea>
-                                <div class="char-counter">
-                                    <span id="descrizione-counter">0/2000</span>
-                                </div>
-                                <small>Minimo 50 caratteri richiesti</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="urgenza">Urgenza</label>
-                                <select name="urgenza" id="urgenza">
-                                    <option value="normale">Normale (48-72 ore) - €30</option>
-                                    <option value="rapida">Rapida (24 ore) - €45</option>
-                                    <option value="urgente">Urgente (12 ore) - €60</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- File Upload -->
-                        <div class="form-section">
-                            <h3>Carica il Contratto</h3>
-                            <div class="form-group">
-                                <label for="documenti">Contratto da Revisionare *</label>
-                                <div class="file-upload-area">
-                                    <input type="file" id="documenti" name="documenti" 
-                                           multiple accept=".pdf,.doc,.docx,.txt" required>
-                                    <div class="file-upload-text">
-                                        <span>📎 Trascina il contratto qui o clicca per selezionare</span>
-                                        <small>Carica il contratto in formato PDF, DOC, DOCX o TXT (max 10MB per file). Puoi caricare più file se necessario.</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Privacy -->
-                        <div class="form-section">
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="privacy" required>
-                                    <span class="checkmark"></span>
-                                    Accetto la <a href="#" target="_blank">Privacy Policy</a> e autorizzo il trattamento dei dati personali *
-                                </label>
-                            </div>
-                            
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="marketing">
-                                    <span class="checkmark"></span>
-                                    Accetto di ricevere comunicazioni commerciali (opzionale)
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Submit -->
-                        <div class="form-submit">
-                            <button type="submit" class="submit-btn">
-                                Procedi al Pagamento
-                            </button>
-                            <p class="form-note">
-                                Sarai reindirizzato a Stripe per completare il pagamento in modo sicuro.
-                                Riceverai la revisione del contratto entro i tempi indicati.
-                            </p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà">
-                        <span>Avvocà</span>
-                    </div>
-                    <p>Consulenza legale professionale online</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Contatti</h4>
-                    <p>Email: avvocatopasqualegranata@gmail.com</p>
-                    <p>P.IVA: IT04770330613</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Servizi</h4>
-                    <p>Parere Legale</p>
-                    <p>Revisione Contratti</p>
-                    <p>Redazione Contratti</p>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Avvocà. Tutti i diritti riservati.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Cookie Banner -->
-    <div class="cookie-banner" style="display: none;">
-        <div class="cookie-content">
-            <p>Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti il loro utilizzo.</p>
-            <button id="accept-cookies" class="cookie-btn">Accetta</button>
-        </div>
+  <!-- Cookie Banner -->
+  <div class="cookie-banner" style="display: none;">
+    <div class="cookie-content">
+      <p>Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti il loro utilizzo.</p>
+      <button id="accept-cookies" class="cookie-btn">Accetta</button>
     </div>
+  </div>
 
-    <script src="../script.js"></script>
-</body>
-</html><!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisione Contratti - Avvocà</title>
-    <link rel="stylesheet" href="../styles.css">
-    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
-</head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà" class="logo-img">
-                    <span class="logo-text">Avvocà</span>
-                </div>
-                
-                <nav class="nav-links">
-                    <a href="../index.html" class="nav-link">Home</a>
-                    <a href="../index.html#servizi" class="nav-link">Servizi</a>
-                    <a href="../index.html#contatti" class="nav-link">Contatti</a>
-                </nav>
-                
-                <button class="hamburger" aria-label="Menu" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-        <div class="mobile-overlay"></div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Back Button -->
-        <div class="container">
-            <a href="../index.html#servizi" class="back-link">
-                ← Torna ai servizi
-            </a>
-        </div>
-
-        <!-- Service Header -->
-        <section class="service-header">
-            <div class="container">
-                <div class="service-header-content">
-                    <h1>Revisione Contratti</h1>
-                    <p class="service-description">
-                        Fai revisionare il tuo contratto da un esperto. I nostri avvocati analizzeranno 
-                        ogni clausola e ti forniranno suggerimenti per proteggere i tuoi interessi.
-                    </p>
-                    <div class="service-features">
-                        <div class="feature">
-                            <span class="feature-icon">🔍</span>
-                            <span>Analisi dettagliata clausole</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">⚠️</span>
-                            <span>Identificazione criticità</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">💡</span>
-                            <span>Suggerimenti migliorativi</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Service Form -->
-        <section class="service-form-section">
-            <div class="container">
-                <div class="form-container">
-                    <div class="form-header">
-                        <h2>Richiedi Revisione Contratto</h2>
-                        <p>Invia il tuo contratto e ricevi un'analisi professionale completa</p>
-                    </div>
-
-                    <form id="serviceForm" class="service-form" novalidate>
-                        <!-- Dati Personali -->
-                        <div class="form-section">
-                            <h3>Dati Personali</h3>
-                            
-                            <div class="form-group">
-                                <label for="nome">Nome e Cognome *</label>
-                                <input type="text" id="nome" name="nome" required 
-                                       placeholder="Inserisci il tuo nome completo">
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="email">Email *</label>
-                                    <input type="email" id="email" name="email" required 
-                                           placeholder="tua@email.com">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email2">Conferma Email *</label>
-                                    <input type="email" id="email2" name="email2" required 
-                                           placeholder="Conferma la tua email">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="telefono">Telefono (opzionale)</label>
-                                <input type="tel" id="telefono" name="telefono" 
-                                       placeholder="+39 123 456 7890">
-                            </div>
-                        </div>
-
-                        <!-- Dettagli Contratto -->
-                        <div class="form-section">
-                            <h3>Dettagli del Contratto</h3>
-                            
-                            <div class="form-group">
-                                <label for="macroarea">Tipo di Contratto *</label>
-                                <select name="macroarea" id="macroarea" required>
-                                    <option value="">Seleziona il tipo di contratto</option>
-                                    <option value="lavoro">Contratto di Lavoro</option>
-                                    <option value="affitto">Contratto di Affitto</option>
-                                    <option value="vendita">Contratto di Vendita</option>
-                                    <option value="fornitura">Contratto di Fornitura</option>
-                                    <option value="servizi">Contratto di Servizi</option>
-                                    <option value="prestazione">Contratto di Prestazione</option>
-                                    <option value="societario">Contratto Societario</option>
-                                    <option value="franchising">Contratto di Franchising</option>
-                                    <option value="distribuzione">Contratto di Distribuzione</option>
-                                    <option value="licenza">Contratto di Licenza</option>
-                                    <option value="altro">Altro tipo di contratto</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="descrizione">Descrizione e Obiettivi della Revisione *</label>
-                                <textarea id="descrizione" name="descrizione" required 
-                                         minlength="50" maxlength="2000"
-                                         placeholder="Descrivi il contratto che vuoi far revisionare, i tuoi dubbi o preoccupazioni specifiche, gli aspetti su cui vorresti maggiore attenzione, e qualsiasi informazione che possa aiutarci a fornirti una revisione più mirata ed efficace."></textarea>
-                                <div class="char-counter">
-                                    <span id="descrizione-counter">0/2000</span>
-                                </div>
-                                <small>Minimo 50 caratteri richiesti</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="urgenza">Urgenza</label>
-                                <select name="urgenza" id="urgenza">
-                                    <option value="normale">Normale (48-72 ore) - €30</option>
-                                    <option value="rapida">Rapida (24 ore) - €45</option>
-                                    <option value="urgente">Urgente (12 ore) - €60</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- File Upload -->
-                        <div class="form-section">
-                            <h3>Carica il Contratto</h3>
-                            <div class="form-group">
-                                <label for="documenti">Contratto da Revisionare *</label>
-                                <input type="file" id="documenti" name="documenti" 
-                                       multiple accept=".pdf,.doc,.docx,.txt" required>
-                                <small>Carica il contratto in formato PDF, DOC, DOCX o TXT (max 10MB per file). Puoi caricare più file se necessario.</small>
-                            </div>
-                        </div>
-
-                        <!-- Privacy -->
-                        <div class="form-section">
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="privacy" required>
-                                    <span class="checkmark"></span>
-                                    Accetto la <a href="#" target="_blank">Privacy Policy</a> e autorizzo il trattamento dei dati personali *
-                                </label>
-                            </div>
-                            
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="marketing">
-                                    <span class="checkmark"></span>
-                                    Accetto di ricevere comunicazioni commerciali (opzionale)
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Submit -->
-                        <div class="form-submit">
-                            <button type="submit" class="submit-btn">
-                                Procedi al Pagamento
-                            </button>
-                            <p class="form-note">
-                                Sarai reindirizzato a Stripe per completare il pagamento in modo sicuro.
-                                Riceverai la revisione del contratto entro i tempi indicati.
-                            </p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà">
-                        <span>Avvocà</span>
-                    </div>
-                    <p>Consulenza legale professionale online</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Contatti</h4>
-                    <p>Email: avvocatopasqualegranata@gmail.com</p>
-                    <p>P.IVA: IT04770330613</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Servizi</h4>
-                    <p>Parere Legale</p>
-                    <p>Revisione Contratti</p>
-                    <p>Redazione Contratti</p>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Avvocà. Tutti i diritti riservati.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Cookie Banner -->
-    <div class="cookie-banner" style="display: none;">
-        <div class="cookie-content">
-            <p>Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti il loro utilizzo.</p>
-            <button id="accept-cookies" class="cookie-btn">Accetta</button>
-        </div>
+  <!-- Header -->
+  <header role="banner">
+    <div class="container">
+      <nav role="navigation" aria-label="Navigazione principale">
+        <a href="../index.html" class="logo" aria-label="Avvocà - Torna alla homepage">
+          <div class="logo-img">
+            <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà" width="50" height="50">
+          </div>
+          <span class="logo-text">Avvocà</span>
+        </a>
+        
+        <button class="hamburger" 
+                type="button"
+                aria-label="Menu di navigazione" 
+                aria-expanded="false"
+                aria-controls="mobile-navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        <ul class="nav-links" id="mobile-navigation">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#servizi">Servizi</a></li>
+          <li><a href="../index.html#contatti" class="nav-cta">Contatti</a></li>
+        </ul>
+      </nav>
     </div>
+    <div class="mobile-overlay"></div>
+  </header>
 
-    <script src="../js/script.js"></script>
-</body>
-</html>
+  <!-- Breadcrumb -->
+  <section class="breadcrumb">
+    <div class="container">
+      <ul class="breadcrumb-list">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#servizi">Servizi</a></li>
+        <li>Revisione Contratti</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="service-page">
+    <!-- Service Hero -->
+    <section class="service-hero">
+      <div class="container">
+        <div class="service-icon">🔍</div>
+        <h1>Revisione Contratti</h1>
+        <p class="service-subtitle">
+          Fai revisionare il tuo contratto da avvocati esperti. Analizziamo ogni clausola 
+          e ti forniamo suggerimenti dettagliati per proteggere i tuoi interessi e evitare rischi legali.
+        </p>
+        <div class="service-highlights">
+          <div class="highlight-item">
+            <span class="highlight-icon">🔍</span>
+            <span>Analisi dettagliata clausole</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">⚠️</span>
+            <span>Identificazione criticità</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">💡</span>
+            <span>Suggerimenti migliorativi</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🛡️</span>
+            <span>Protezione interessi</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Steps -->
+    <section>
+      <div class="container">
+        <h2>Come funziona la revisione</h2>
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="step-number">1</div>
+            <h3>Carica il contratto</h3>
+            <p>Invia il contratto che vuoi far revisionare insieme alle tue preoccupazioni specifiche.</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">2</div>
+            <h3>Analisi professionale</h3>
+            <p>I nostri avvocati esaminano ogni clausola identificando rischi e opportunità di miglioramento.</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">3</div>
+            <h3>Report dettagliato</h3>
+            <p>Ricevi un report completo con analisi, criticità evidenziate e suggerimenti concreti.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section>
+      <div class="container">
+        <div class="service-form">
+          <div class="form-description">
+            <h2>Richiedi Revisione del tuo Contratto</h2>
+            <p>Invia il tuo contratto e ricevi un'analisi professionale completa con suggerimenti mirati per proteggerti al meglio.</p>
+          </div>
+
+          <div class="form-instructions">
+            🔍 <strong>Revisione approfondita:</strong> Analizziamo ogni clausola per identificare vantaggi, svantaggi e possibili miglioramenti.
+          </div>
+
+          <form id="serviceForm" class="contact-form" novalidate>
+            <!-- Dati Personali -->
+            <fieldset class="required-fieldset">
+              <legend>👤 Dati Personali</legend>
+              
+              <div class="form-group">
+                <label for="nome">Nome e Cognome *</label>
+                <input type="text" id="nome" name="nome" required 
+                       placeholder="Il tuo nome completo">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email *</label>
+                  <input type="email" id="email" name="email" required 
+                         placeholder="tua@email.com">
+                </div>
+                <div class="form-group">
+                  <label for="email2">Conferma Email *</label>
+                  <input type="email" id="email2" name="email2" required 
+                         placeholder="Conferma la tua email">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="telefono">Telefono (opzionale)</label>
+                <input type="tel" id="telefono" name="telefono" 
+                       placeholder="+39 123 456 7890">
+                <div class="field-help">Per eventuali chiarimenti urgenti durante la revisione</div>
+              </div>
+            </fieldset>
+
+            <!-- Dettagli Contratto -->
+            <fieldset class="required-fieldset">
+              <legend>📄 Dettagli del Contratto da Revisionare</legend>
+              
+              <div class="form-group">
+                <label for="macroarea">Tipo di Contratto *</label>
+                <select name="macroarea" id="macroarea" required>
+                  <option value="">Seleziona il tipo di contratto</option>
+                  <option value="lavoro">Contratto di Lavoro</option>
+                  <option value="affitto">Contratto di Affitto/Locazione</option>
+                  <option value="vendita">Contratto di Vendita</option>
+                  <option value="fornitura">Contratto di Fornitura</option>
+                  <option value="servizi">Contratto di Servizi</option>
+                  <option value="prestazione">Contratto di Prestazione</option>
+                  <option value="societario">Contratto Societario</option>
+                  <option value="franchising">Contratto di Franchising</option>
+                  <option value="distribuzione">Contratto di Distribuzione</option>
+                  <option value="licenza">Contratto di Licenza</option>
+                  <option value="consulenza">Contratto di Consulenza</option>
+                  <option value="privacy">Accordo Privacy/GDPR</option>
+                  <option value="nda">Accordo di Riservatezza (NDA)</option>
+                  <option value="altro">Altro tipo di contratto</option>
+                </select>
+                <div class="field-help">Aiutaci a identificare il tipo per un'analisi più mirata</div>
+              </div>
+
+              <div class="form-group">
+                <label for="descrizione">Descrizione e Obiettivi della Revisione *</label>
+                <textarea id="descrizione" name="descrizione" required 
+                         minlength="50" maxlength="2000"
+                         placeholder="Descrivi il contratto e i tuoi obiettivi:&#10;• Chi sono le parti coinvolte?&#10;• Qual è l'oggetto del contratto?&#10;• Hai dubbi o preoccupazioni specifiche?&#10;• Su quali clausole vorresti maggiore attenzione?&#10;• Cosa vuoi ottenere o evitare?&#10;• Hai già firmato o devi ancora firmare?&#10;&#10;Più dettagli fornisci, più mirata sarà la nostra revisione."></textarea>
+                <div class="char-count">
+                  <span id="descrizione-counter">0/2000</span>
+                </div>
+                <div class="field-help">Spiega le tue preoccupazioni e cosa vorresti ottenere dalla revisione</div>
+              </div>
+
+              <div class="form-group">
+                <label for="urgenza">Livello di Urgenza</label>
+                <select name="urgenza" id="urgenza">
+                  <option value="normale">⏰ Normale (48-72 ore) - €30</option>
+                  <option value="rapida">🚀 Rapida (24 ore) - €45 (+€15)</option>
+                  <option value="urgente">⚡ Urgente (12 ore) - €60 (+€30)</option>
+                </select>
+                <div class="field-help">Scegli in base alle tue necessità temporali</div>
+              </div>
+            </fieldset>
+
+            <!-- File Upload -->
+            <fieldset class="required-fieldset">
+              <legend>📎 Carica il Contratto da Revisionare</legend>
+              <div class="file-group">
+                <label for="documenti">Contratto e Documenti Correlati *</label>
+                <div class="file-drop-zone">
+                  <input type="file" id="documenti" name="documenti" 
+                         multiple accept=".pdf,.doc,.docx,.txt" required>
+                  <div class="file-drop-icon">📋</div>
+                  <div><strong>Trascina il contratto qui</strong> o clicca per selezionare</div>
+                  <div class="file-drop-text">PDF, DOC, DOCX, TXT • Max 10MB per file</div>
+                </div>
+                <div class="field-help">
+                  <strong>Obbligatorio:</strong> Carica il contratto principale. Puoi aggiungere anche allegati, bozze precedenti o documenti correlati per una revisione più completa.
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Privacy -->
+            <fieldset class="required-fieldset">
+              <legend>🔒 Privacy e Consensi</legend>
+              
+              <div class="checkbox-group">
+                <input type="checkbox" id="privacy" name="privacy" required>
+                <label for="privacy">
+                  Accetto la <a href="../pages/privacy.html" target="_blank">Privacy Policy</a> e autorizzo il trattamento dei dati personali e del contratto per la revisione richiesta *
+                </label>
+              </div>
+              
+              <div class="checkbox-group">
+                <input type="checkbox" id="marketing" name="marketing">
+                <label for="marketing">
+                  Accetto di ricevere comunicazioni commerciali sui servizi legali (opzionale)
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Submit -->
+            <div class="form-submit">
+              <button type="submit" class="submit-btn">
+                <span class="submit-icon">🔍</span>
+                Procedi al Pagamento Sicuro
+              </button>
+              <p class="field-help">
+                Pagamento sicuro tramite Stripe. Riceverai la revisione completa del contratto 
+                con analisi dettagliata e suggerimenti migliorativi entro i tempi indicati.
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service Details -->
+    <section class="service-details">
+      <div class="container">
+        <h2>Cosa Include la Revisione</h2>

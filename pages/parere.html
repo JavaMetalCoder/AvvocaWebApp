@@ -1,246 +1,325 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" prefix="og: http://ogp.me/ns#">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parere Legale - Avvocà</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parere Legale Online - Avvocà</title>
+  <meta name="description" content="Richiedi un parere legale professionale online. Risposta in 24-48 ore da avvocati specializzati. €30 per consulenza rapida e accurata.">
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+  <link rel="preload" href="../css/style.css" as="style">
+  <link rel="stylesheet" href="../css/style.css">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Parere Legale Online - Avvocà">
+  <meta property="og:description" content="Consulenza legale professionale in 24-48 ore. €30 per un parere scritto dettagliato.">
+  <meta property="og:url" content="https://avvoca.net/pages/parere.html">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà" class="logo-img">
-                    <span class="logo-text">Avvocà</span>
-                </div>
-                
-                <nav class="nav-links">
-                    <a href="../index.html" class="nav-link">Home</a>
-                    <a href="../index.html#servizi" class="nav-link">Servizi</a>
-                    <a href="../index.html#contatti" class="nav-link">Contatti</a>
-                </nav>
-                
-                <button class="hamburger" aria-label="Menu" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </div>
-        <div class="mobile-overlay"></div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Back Button -->
-        <div class="container">
-            <a href="../index.html#servizi" class="back-link">
-                ← Torna ai servizi
-            </a>
-        </div>
-
-        <!-- Service Header -->
-        <section class="service-header">
-            <div class="container">
-                <div class="service-header-content">
-                    <h1>Parere Legale Scritto</h1>
-                    <p class="service-description">
-                        Ottieni un parere legale professionale e dettagliato su qualsiasi questione giuridica. 
-                        I nostri avvocati analizzeranno il tuo caso e ti forniranno una risposta chiara e motivata.
-                    </p>
-                    <div class="service-features">
-                        <div class="feature">
-                            <span class="feature-icon">⚖️</span>
-                            <span>Analisi legale approfondita</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">📄</span>
-                            <span>Parere scritto motivato</span>
-                        </div>
-                        <div class="feature">
-                            <span class="feature-icon">🕐</span>
-                            <span>Risposta in 24-72 ore</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Service Form -->
-        <section class="service-form-section">
-            <div class="container">
-                <div class="form-container">
-                    <div class="form-header">
-                        <h2>Richiedi il tuo Parere Legale</h2>
-                        <p>Compila il form con tutti i dettagli necessari per ricevere una consulenza accurata</p>
-                    </div>
-
-                    <form id="serviceForm" class="service-form" novalidate>
-                        <!-- Dati Personali -->
-                        <div class="form-section">
-                            <h3>Dati Personali</h3>
-                            
-                            <div class="form-group">
-                                <label for="nome">Nome e Cognome *</label>
-                                <input type="text" id="nome" name="nome" required 
-                                       placeholder="Inserisci il tuo nome completo">
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="email">Email *</label>
-                                    <input type="email" id="email" name="email" required 
-                                           placeholder="tua@email.com">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email2">Conferma Email *</label>
-                                    <input type="email" id="email2" name="email2" required 
-                                           placeholder="Conferma la tua email">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="telefono">Telefono (opzionale)</label>
-                                <input type="tel" id="telefono" name="telefono" 
-                                       placeholder="+39 123 456 7890">
-                            </div>
-                        </div>
-
-                        <!-- Dettagli Caso -->
-                        <div class="form-section">
-                            <h3>Dettagli del Caso</h3>
-                            
-                            <div class="form-group">
-                                <label for="macroarea">Area Legale *</label>
-                                <select name="macroarea" id="macroarea" required>
-                                    <option value="">Seleziona l'area legale</option>
-                                    <option value="civile">Diritto Civile</option>
-                                    <option value="penale">Diritto Penale</option>
-                                    <option value="lavoro">Diritto del Lavoro</option>
-                                    <option value="famiglia">Diritto di Famiglia</option>
-                                    <option value="societario">Diritto Societario</option>
-                                    <option value="tributario">Diritto Tributario</option>
-                                    <option value="amministrativo">Diritto Amministrativo</option>
-                                    <option value="contratti">Diritti e Contratti</option>
-                                    <option value="altro">Altro</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="descrizione">Descrizione del Caso *</label>
-                                <textarea id="descrizione" name="descrizione" required 
-                                         minlength="50" maxlength="2000"
-                                         placeholder="Descrivi dettagliatamente la tua situazione legale, i fatti accaduti, le tue domande specifiche e qualsiasi informazione rilevante. Più dettagli fornisci, più accurato sarà il parere."></textarea>
-                                <div class="char-counter">
-                                    <span id="descrizione-counter">0/2000</span>
-                                </div>
-                                <small>Minimo 50 caratteri richiesti</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="urgenza">Urgenza</label>
-                                <select name="urgenza" id="urgenza">
-                                    <option value="normale">Normale (48-72 ore) - €30</option>
-                                    <option value="rapida">Rapida (24 ore) - €45</option>
-                                    <option value="urgente">Urgente (12 ore) - €60</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- File Upload -->
-                        <div class="form-section">
-                            <h3>Documenti Allegati</h3>
-                            <div class="form-group">
-                                <label for="documenti">Allegati (opzionale)</label>
-                                <div class="file-upload-area">
-                                    <input type="file" id="documenti" name="documenti" 
-                                           multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt">
-                                    <div class="file-upload-text">
-                                        <span>📎 Trascina i file qui o clicca per selezionare</span>
-                                        <small>Formati supportati: PDF, DOC, DOCX, JPG, PNG, TXT (max 10MB per file, max 10 file)</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Privacy -->
-                        <div class="form-section">
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="privacy" required>
-                                    <span class="checkmark"></span>
-                                    Accetto la <a href="#" target="_blank">Privacy Policy</a> e autorizzo il trattamento dei dati personali *
-                                </label>
-                            </div>
-                            
-                            <div class="checkbox-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" name="marketing">
-                                    <span class="checkmark"></span>
-                                    Accetto di ricevere comunicazioni commerciali (opzionale)
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Submit -->
-                        <div class="form-submit">
-                            <button type="submit" class="submit-btn">
-                                Procedi al Pagamento
-                            </button>
-                            <p class="form-note">
-                                Sarai reindirizzato a Stripe per completare il pagamento in modo sicuro.
-                                Riceverai il parere legale entro i tempi indicati.
-                            </p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà">
-                        <span>Avvocà</span>
-                    </div>
-                    <p>Consulenza legale professionale online</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Contatti</h4>
-                    <p>Email: avvocatopasqualegranata@gmail.com</p>
-                    <p>P.IVA: IT04770330613</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Servizi</h4>
-                    <p>Parere Legale</p>
-                    <p>Revisione Contratti</p>
-                    <p>Redazione Contratti</p>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Avvocà. Tutti i diritti riservati.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Cookie Banner -->
-    <div class="cookie-banner" style="display: none;">
-        <div class="cookie-content">
-            <p>Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti il loro utilizzo.</p>
-            <button id="accept-cookies" class="cookie-btn">Accetta</button>
-        </div>
+  <!-- Cookie Banner -->
+  <div class="cookie-banner" style="display: none;">
+    <div class="cookie-content">
+      <p>Utilizziamo i cookie per migliorare la tua esperienza. Continuando a navigare accetti il loro utilizzo.</p>
+      <button id="accept-cookies" class="cookie-btn">Accetta</button>
     </div>
+  </div>
 
-    <script src="../js/script.js"></script>
+  <!-- Header -->
+  <header role="banner">
+    <div class="container">
+      <nav role="navigation" aria-label="Navigazione principale">
+        <a href="../index.html" class="logo" aria-label="Avvocà - Torna alla homepage">
+          <div class="logo-img">
+            <img src="../assets/logo-avvoca.jpeg" alt="Logo Avvocà" width="50" height="50">
+          </div>
+          <span class="logo-text">Avvocà</span>
+        </a>
+        
+        <button class="hamburger" 
+                type="button"
+                aria-label="Menu di navigazione" 
+                aria-expanded="false"
+                aria-controls="mobile-navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        <ul class="nav-links" id="mobile-navigation">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../index.html#servizi">Servizi</a></li>
+          <li><a href="../index.html#contatti" class="nav-cta">Contatti</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="mobile-overlay"></div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <section class="breadcrumb">
+    <div class="container">
+      <ul class="breadcrumb-list">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#servizi">Servizi</a></li>
+        <li>Parere Legale</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="service-page">
+    <!-- Service Hero -->
+    <section class="service-hero">
+      <div class="container">
+        <div class="service-icon">📝</div>
+        <h1>Parere Legale Scritto</h1>
+        <p class="service-subtitle">
+          Ottieni un parere legale professionale e dettagliato su qualsiasi questione giuridica. 
+          I nostri avvocati analizzeranno il tuo caso e ti forniranno una risposta chiara e motivata.
+        </p>
+        <div class="service-highlights">
+          <div class="highlight-item">
+            <span class="highlight-icon">⚖️</span>
+            <span>Analisi legale approfondita</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">📄</span>
+            <span>Parere scritto motivato</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">🕐</span>
+            <span>Risposta in 24-72 ore</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Steps -->
+    <section>
+      <div class="container">
+        <h2>Come funziona</h2>
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="step-number">1</div>
+            <h3>Compila il form</h3>
+            <p>Descrivi dettagliatamente la tua situazione legale e carica eventuali documenti utili.</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">2</div>
+            <h3>Paga in sicurezza</h3>
+            <p>Pagamento immediato e sicuro tramite Stripe con tutte le principali carte di credito.</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">3</div>
+            <h3>Ricevi il parere</h3>
+            <p>Parere legale dettagliato e professionale direttamente nella tua casella email.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section>
+      <div class="container">
+        <div class="service-form">
+          <div class="form-description">
+            <h2>Richiedi il tuo Parere Legale</h2>
+            <p>Compila il form con tutti i dettagli necessari per ricevere una consulenza accurata e professionale.</p>
+          </div>
+
+          <div class="form-instructions">
+            💡 <strong>Suggerimento:</strong> Più dettagli fornisci, più accurato e utile sarà il parere legale che riceverai.
+          </div>
+
+          <form id="serviceForm" class="contact-form" novalidate>
+            <!-- Dati Personali -->
+            <fieldset class="required-fieldset">
+              <legend>👤 Dati Personali</legend>
+              
+              <div class="form-group">
+                <label for="nome">Nome e Cognome *</label>
+                <input type="text" id="nome" name="nome" required 
+                       placeholder="Il tuo nome completo">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email *</label>
+                  <input type="email" id="email" name="email" required 
+                         placeholder="tua@email.com">
+                </div>
+                <div class="form-group">
+                  <label for="email2">Conferma Email *</label>
+                  <input type="email" id="email2" name="email2" required 
+                         placeholder="Conferma la tua email">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="telefono">Telefono (opzionale)</label>
+                <input type="tel" id="telefono" name="telefono" 
+                       placeholder="+39 123 456 7890">
+                <div class="field-help">Il telefono ci aiuta a contattarti per eventuali chiarimenti urgenti</div>
+              </div>
+            </fieldset>
+
+            <!-- Dettagli Caso -->
+            <fieldset class="required-fieldset">
+              <legend>⚖️ Dettagli del Caso Legale</legend>
+              
+              <div class="form-group">
+                <label for="macroarea">Area Legale *</label>
+                <select name="macroarea" id="macroarea" required>
+                  <option value="">Seleziona l'area legale di competenza</option>
+                  <option value="civile">Diritto Civile</option>
+                  <option value="penale">Diritto Penale</option>
+                  <option value="lavoro">Diritto del Lavoro</option>
+                  <option value="famiglia">Diritto di Famiglia</option>
+                  <option value="societario">Diritto Societario</option>
+                  <option value="tributario">Diritto Tributario</option>
+                  <option value="amministrativo">Diritto Amministrativo</option>
+                  <option value="contratti">Diritti e Contratti</option>
+                  <option value="altro">Altro</option>
+                </select>
+                <div class="field-help">Seleziona l'area che meglio descrive la tua questione legale</div>
+              </div>
+
+              <div class="form-group">
+                <label for="descrizione">Descrizione Dettagliata del Caso *</label>
+                <textarea id="descrizione" name="descrizione" required 
+                         minlength="50" maxlength="2000"
+                         placeholder="Descrivi la tua situazione legale nel modo più dettagliato possibile:&#10;• I fatti accaduti (quando, dove, come)&#10;• Le persone coinvolte&#10;• I documenti in tuo possesso&#10;• Le tue domande specifiche&#10;• Cosa vorresti ottenere&#10;&#10;Più informazioni fornisci, più preciso sarà il nostro parere."></textarea>
+                <div class="char-count">
+                  <span id="descrizione-counter">0/2000</span>
+                </div>
+                <div class="field-help">Minimo 50 caratteri richiesti. Sii il più specifico possibile.</div>
+              </div>
+
+              <div class="form-group">
+                <label for="urgenza">Livello di Urgenza</label>
+                <select name="urgenza" id="urgenza">
+                  <option value="normale">⏰ Normale (48-72 ore) - €30</option>
+                  <option value="rapida">🚀 Rapida (24 ore) - €45 (+€15)</option>
+                  <option value="urgente">⚡ Urgente (12 ore) - €60 (+€30)</option>
+                </select>
+                <div class="field-help">Scegli in base alle tue necessità temporali</div>
+              </div>
+            </fieldset>
+
+            <!-- File Upload -->
+            <fieldset>
+              <legend>📎 Documenti Allegati (Opzionale)</legend>
+              <div class="file-group">
+                <label for="documenti">Carica Documenti Utili</label>
+                <div class="file-drop-zone">
+                  <input type="file" id="documenti" name="documenti" 
+                         multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt">
+                  <div class="file-drop-icon">📁</div>
+                  <div><strong>Trascina i file qui</strong> o clicca per selezionare</div>
+                  <div class="file-drop-text">PDF, DOC, DOCX, JPG, PNG, TXT • Max 10MB per file • Max 10 file</div>
+                </div>
+                <div class="field-help">
+                  Allega contratti, email, foto, documenti ufficiali o qualsiasi materiale che possa aiutarci a comprendere meglio il tuo caso.
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Privacy -->
+            <fieldset class="required-fieldset">
+              <legend>🔒 Privacy e Consensi</legend>
+              
+              <div class="checkbox-group">
+                <input type="checkbox" id="privacy" name="privacy" required>
+                <label for="privacy">
+                  Accetto la <a href="../pages/privacy.html" target="_blank">Privacy Policy</a> e autorizzo il trattamento dei dati personali per la consulenza legale richiesta *
+                </label>
+              </div>
+              
+              <div class="checkbox-group">
+                <input type="checkbox" id="marketing" name="marketing">
+                <label for="marketing">
+                  Accetto di ricevere comunicazioni commerciali e aggiornamenti sui servizi legali (opzionale)
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Submit -->
+            <div class="form-submit">
+              <button type="submit" class="submit-btn">
+                <span class="submit-icon">💳</span>
+                Procedi al Pagamento Sicuro
+              </button>
+              <p class="field-help">
+                Sarai reindirizzato alla pagina di pagamento sicura di Stripe. 
+                Riceverai il parere legale professionale entro i tempi indicati direttamente via email.
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Service Details -->
+    <section class="service-details">
+      <div class="container">
+        <h2>Cosa Include il Parere Legale</h2>
+        <div class="details-grid">
+          <div class="detail-item">
+            <h3>📋 Analisi Completa</h3>
+            <p>Esame approfondito della tua situazione giuridica con identificazione di tutti gli aspetti legali rilevanti.</p>
+          </div>
+          <div class="detail-item">
+            <h3>📖 Interpretazione Normativa</h3>
+            <p>Spiegazione chiara delle leggi applicabili al tuo caso con riferimenti normativi specifici.</p>
+          </div>
+          <div class="detail-item">
+            <h3>💡 Consigli Pratici</h3>
+            <p>Suggerimenti concreti su come procedere e quali azioni intraprendere per tutelare i tuoi diritti.</p>
+          </div>
+          <div class="detail-item">
+            <h3>⚠️ Rischi e Opportunità</h3>
+            <p>Valutazione dei rischi legali e delle opportunità disponibili con analisi costi-benefici.</p>
+          </div>
+          <div class="detail-item">
+            <h3>📝 Documento Scritto</h3>
+            <p>Parere legale formale e dettagliato che potrai conservare e utilizzare come riferimento.</p>
+          </div>
+          <div class="detail-item">
+            <h3>🔍 Follow-up</h3>
+            <p>Possibilità di richiedere chiarimenti aggiuntivi sul parere ricevuto entro 7 giorni.</p>
+          </div>
+        </div>
+        
+        <div class="service-guarantee">
+          <h3>🛡️ Garanzia di Qualità</h3>
+          <p>Tutti i nostri pareri legali sono redatti da avvocati abilitati con esperienza specifica nel settore richiesto. Se non sei soddisfatto della qualità del parere ricevuto, ti rimborsiamo integralmente l'importo pagato.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <nav class="footer-links">
+          <a href="../pages/privacy.html">Privacy Policy</a>
+          <a href="../pages/termini.html">Termini di Servizio</a>
+          <a href="../pages/cookies.html">Cookie Policy</a>
+        </nav>
+        
+        <div class="copyright">
+          <p>
+            © 2025 Avvocà – Avv. Pasquale Granata • 
+            <a href="mailto:avvocatopasqualegranata@gmail.com">avvocatopasqualegranata@gmail.com</a><br>
+            <small>P.IVA: IT04770330613 - Iscritto all'Ordine Avvocati di Napoli Nord</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/script.js" defer></script>
 </body>
 </html>
