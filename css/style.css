@@ -273,6 +273,7 @@ nav {
   align-items: center;
   gap: var(--space-8);
   list-style: none;
+  
 }
 
 .nav-links a {
@@ -2412,9 +2413,7 @@ header {
 nav {
   background: transparent;          /* Mantieni o rimuovi trasparenza a piacere */
 }
-.nav-links a {
-  color: var(--text-dark);          /* Testo scuro sempre leggibile */
-}
+
 
 /* ========== HAMBURGER BUTTON ========== */
 .hamburger {
@@ -2442,3 +2441,151 @@ input:focus, textarea:focus, select:focus {
   }
   
 }
+
+
+/* ===== FORM E INPUT FULL-RESPONSIVE ===== */
+.form-container,
+.service-form,
+.contact-form {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+/* Assicura che gli elementi di form rimangano sempre al 100% */
+.form-container input,
+.form-container textarea,
+.form-container select,
+.service-form input,
+.service-form textarea,
+.service-form select {
+  width: 100% !important;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Trasforma le righe di due colonne in una sola su mobile */
+@media (max-width: 768px) {
+  .form-row {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: var(--space-4);
+  }
+}
+
+/* Previene overflow orizzontale globale */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Se hai dei fieldset o container particolari */
+fieldset, .file-group {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* ================= GLOBAL OVERFLOW FIX ================= */
+/* Preveniamo ogni sforamento orizzontale su qualsiasi contenitore */
+
+
+/* =============== FIX FIELDSET & FORM ROWS =============== */
+/* Assicuriamoci che fieldset e righe di form non escano dal box */
+fieldset,
+.form-row,
+.form-group {
+  max-width: 100%;
+  box-sizing: border-box; /* include padding/border nella larghezza */
+  overflow-x: hidden;
+}
+
+/* =============== FIX PRIVACY & CONSENSI =============== */
+/* Permetti al testo di andare a capo anziché uscire dallo schermo */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;    /* spezza le righe quando serve */
+  gap: var(--space-3);
+  width: 100%;
+  min-width: 0;       /* permette di ridursi sotto il contenitore */
+}
+
+
+
+/* Rimuove eventuale overflow sui figli */
+.checkbox-group > * {
+  overflow-x: hidden;
+}
+
+/* Margine sotto per separazione visiva */
+.checkbox-group + .field-help,
+.checkbox-group + .char-count {
+  margin-top: var(--space-2);
+}
+
+/* =============== OPTIONAL: FORM INPUTS CLEANUP =============== */
+input, textarea, select {
+  background-color: var(--white) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--gray-300) !important;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.2) !important;
+}
+
+/* =============== FINAL MOBILE-SPECIFIC SAFEGUARD =============== */
+@media (max-width: 768px) {
+  /* Forza il wrapping di qualsiasi colonna form */
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+  
+  
+}
+
+/* ===== PRIVACY & CONSENSI GRID LAYOUT ===== */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+/* Ogni coppia checkbox+label */
+.checkbox-group .checkbox-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--gray-50);
+  border-radius: var(--radius-lg);
+}
+
+/* Allinea sempre il quadratino */
+.checkbox-wrapper input[type="checkbox"] {
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Testo a destra, rientrato */
+.checkbox-wrapper label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--leading-relaxed);
+}
+
+/* Su mobile una colonna sola per migliore leggibilità */
+@media (max-width: 640px) {
+  .checkbox-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+
