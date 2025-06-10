@@ -5,8 +5,8 @@ const CONFIG = {
   backend: {
     // URL del backend - cambia questo per production
     baseUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-      ? 'http://localhost:8080' 
-      : 'https://avvoca-backend.onrender.com', // URL del tuo backend in produzione
+        ? 'http://localhost:8080' 
+        : 'https://avvocawebappbackend.onrender.com', // URL del tuo backend in produzione
     endpoints: {
       checkout: '/create-checkout-session',
       health: '/health'
